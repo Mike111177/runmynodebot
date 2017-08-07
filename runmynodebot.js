@@ -88,7 +88,9 @@ function stop(delay=500){
 
 //Motors 1 and 2 (0 and 1) are drive motors, 3 and 4 (2 and 3) are accessories.
 robot.on('command_to_robot', data => {
-	console.log(data);
+	if (argv.debug){
+		console.log(data);
+	}
 	if (!handling){
 		handling = true;
 		switch (data.command){
