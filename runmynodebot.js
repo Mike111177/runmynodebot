@@ -115,12 +115,12 @@ robot.on('command_to_robot', data => {
 			stop();
 			break;
 		case 'LL': //Aim
-			motors[2].fwd(255);
+			motors[2].rev(255);
 			stop(250); //After 1/4 second
 			break;
 		case 'FG': //Fire
-			motors[3].fwd(255);
-			stop(1000); //After 1 second
+			motors[3].rev(255);
+			stop(4000); //After 1 second
 			break;
 		default:
 			stop(0); //Not valid command. Continue
