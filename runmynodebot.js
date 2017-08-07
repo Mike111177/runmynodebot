@@ -108,6 +108,9 @@ robot.on('command_to_robot', data => {
 			motors[3].fwd(255);
 			stop(1000); //After 1 second
 			break;
+		default:
+			stop(0); //Not valid command. Continue
+			break;
 		}
 	}
 });
