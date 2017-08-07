@@ -1,17 +1,26 @@
-// To install node 8.2.1 to the raspberry pi, run:
-// curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-// Then:
-// sudo apt install nodejs
+//To install node 8.2.1 to the raspberry pi, run:
+//curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+//Then:
+//sudo apt install nodejs
 
 //To install required libraries, cd to this directory and run:
-//npm install johnny-five raspi-io socket.io-client --save
+//npm install johnny-five raspi-io socket.io-client yargs --save
 
 //To start run in this directory:
 //sudo node runmynodebot.js
 
+//Parse command line.
+var argv = require('yargs')
+	.usage('usage: sudo node $0 <robot-ID> [--opts]')
+	.boolean('debug').describe('debug', 'Enable server output and repl server. Not reccomended for headless operation.')
+	.string('_')
+	.demandCommand(1)
+	.help()
+	.argv;
+
 //Server connection setup
 const io = require('./RobotIO');
-var robot = new io({robotID:'83336855'}); // Change this id to your own robot id.
+var robot = new io({robotID: argv._[0]});
 
 //Motor setup (Adafruit motorhat with four reversable dc motors and four servos)
 const five = require("johnny-five");
@@ -19,7 +28,8 @@ const Raspi = require("raspi-io");
 
 var motors, servos;
 const board = new five.Board({
-	io: new Raspi()
+	io: new Raspi(),
+	repl: argv.debug
 });
 
 board.on('ready', function() {
@@ -55,10 +65,12 @@ board.on('ready', function() {
 			pin: 15,
 		})];
 
-	this.repl.inject({
-		motors: motors,
-		servos: servos
-	});
+	if (argv.debug){
+		this.repl.inject({
+			motors: motors,
+			servos: servos
+		});
+	}
 });
 
 
@@ -110,7 +122,7 @@ robot.on('command_to_robot', data => {
 			break;
 		default:
 			stop(0); //Not valid command. Continue
-			break;
+		break;
 		}
 	}
 });
