@@ -1,14 +1,3 @@
-//To install node 8.2.1 to the raspberry pi, run:
-//curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-//Then:
-//sudo apt install nodejs
-
-//To install required libraries, cd to this directory and run:
-//npm install johnny-five raspi-io socket.io-client yargs --save
-
-//To start run in this directory:
-//sudo node runmynodebot.js
-
 //Parse command line.
 var argv = require('yargs')
 	.usage('usage: sudo node $0 <robot-ID> [--opts]')
