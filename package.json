@@ -1,0 +1,26 @@
+{
+	"name": "runmynodebot",
+	"version": "1.0.0",
+	"description": "Runs your nodebot",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Mike111177/runmynodebot.git"
+	},
+	"keywords": [
+		"nodebot",
+		"letsrobot.tv"
+		],
+		"author": "Mike111177",
+		"license": "GPL-3.0",
+		"bugs": {
+			"url": "https://github.com/Mike111177/runmynodebot/issues"
+		},
+		"homepage": "https://github.com/Mike111177/runmynodebot#readme",
+		"dependencies": { 
+			"yargs" : "*",
+			"socket.io-client" : "*",
+			"johnny-five" : "*",
+			"raspi-io" : "*"
+		},
+		"bin" : { "runmynodebot" : "./runmynodebot.js" }
+}
