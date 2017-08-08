@@ -13,7 +13,7 @@ setInterval(()=>{
 		let file = prefix + Math.random().toString();
 		fs.writeFile(file, queue.shift(), (err)=>{
 			if (err) throw err;
-			exec('cat ' + file + ' | espeak --stdout | tee >(aplay -D plughw:0,0) >(aplay -D plughw:1,0) >(aplay -D plughw:2,0)', ()=>{
+			exec('cat ' + file + ' | espeak --stdout | aplay -D plughw:2,0', {shell: '/bin/bash'}, ()=>{
 				running = false;
 			});
 		});
