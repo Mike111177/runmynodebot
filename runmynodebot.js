@@ -124,6 +124,7 @@ board.on('ready', function() {
 
 	if (argv.debug){
 		this.repl.inject({
+			drive_man: drive_man,
 			motors: motors,
 			servos: servos
 		});
