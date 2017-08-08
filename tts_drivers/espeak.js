@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
 
-const prefix = os.tempdir() + path.sep + 'voice_';
+const prefix = os.tmpdir() + path.sep + 'voice_';
 var queue = [];
 var running = false;
 
