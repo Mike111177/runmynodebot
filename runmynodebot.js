@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 //Parse command line.
 var argv = require('yargs')
@@ -13,7 +14,7 @@ var argv = require('yargs')
 		//Drive mode option
 		'drive-mode': {
 			describe: 'Command parser used for movement motors.',
-			choices: fs.readdirSync('./drive_modes').map(fname => {return fname.slice(0,-3);}), //Reading from drive_modes
+			choices: fs.readdirSync(__dirname + path.sep + 'drive_modes').map(fname => {return fname.slice(0,-3);}), //Reading from drive_modes
 			default: 'fcfs_tank',
 			type: 'string'
 		},
@@ -48,7 +49,7 @@ var argv = require('yargs')
 		'tts-driver':{
 			describe: 'Choose which tts engine to use.',
 			default: 'espeak',
-			choices: fs.readdirSync('./tts_drivers').map(fname => {return fname.slice(0,-3);}), //Reading from tts_drivers
+			choices: fs.readdirSync(__dirname + path.sep + 'tts_drivers').map(fname => {return fname.slice(0,-3);}), //Reading from tts_drivers
 			type: 'string'
 		}
 	})
