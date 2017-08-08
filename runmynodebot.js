@@ -51,6 +51,14 @@ var argv = require('yargs')
 			default: 'espeak',
 			choices: fs.readdirSync(__dirname + path.sep + 'tts_drivers').map(fname => {return fname.slice(0,-3);}), //Reading from tts_drivers
 			type: 'string'
+		},
+		'play': {
+			alias: 'p',
+			describe: 'Play a sound everytime a command is triggered. Takes the next two positional arguments. First being the a command, second being a path to a .wav file to play. This can be used multiple times for multiple sounds.',
+			nargs: 2,
+			type: 'array',
+			coerce: (p)=>{return p.reduce((a,v,i,ar)=>{if(i%2){a[ar[i-1]]=path.resolve(v);}return a;},{})}, //Converts array into key value set.
+			default: {}
 		}
 	})
 	//Check that bias is between -1 and 1
@@ -59,6 +67,10 @@ var argv = require('yargs')
 	.check(({speed}) => {if (0<=speed && speed<=255) return true; else throw(new Error('Error: Speed must be between 0 and 255.'));})
 	//Check that move times are greater than zero.
 	.check((args) => {if (0<=args['turn-time'] && 0<=args['straight-time']) return true; else throw(new Error('Error: turn-time and straight-time must both be greater than 0.'));})
+	//Check that all sound files in play are .wav files.
+	.check(({play}) => {if (Object.values(play).every((str)=>str.endsWith('.wav'))) return true; else throw(new Error('Error: sound files must be .wav files.'));})
+	//Argument debug. --yargs
+	.check((args) => {if (!args.yargs) return true; else {console.log(args); throw('yarg');}})
 	//Other options parse as strings
 	.string('_')
 	.demandCommand(1)
@@ -146,10 +158,15 @@ function stop(delay=500){
 	}, delay);
 }
 
+const { exec } = require('child_process');
+
 //Motors 1 and 2 (0 and 1) are drive motors, 3 and 4 (2 and 3) are accessories.
 robot.on('command_to_robot', data => {
 	if (argv.debug){
 		console.log(data);
+	}
+	if (data.command in argv.play){
+		exec('aplay -D plughw:2,0 ' + argv.play[data.command], {shell: '/bin/bash'});
 	}
 	
 	//Run the command through the drive manager first, if then if it was not a valid command 
