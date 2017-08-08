@@ -41,9 +41,24 @@ class FCFS_TANK {
 	}
 	
 	drive(left_speed, right_speed, time){
-		this.left_speed>0 ? this.motors.left.fwd(left_speed) : this.motors.left.rev(-left_speed);
-		this.right_speed>0 ? this.motors.right.fwd(right_speed) : this.motors.right.rev(-right_speed);
-		this.stop(time);
+		let moving = false;
+		if (left_speed){
+			moving = true;
+			if (left_speed>0){
+				this.motors.left.fwd(left_speed);
+			} else {
+				this.motors.left.rev(-left_speed);
+			}
+		}
+		if (right_speed){
+			moving = true;
+			if (right_speed>0){
+				this.motors.left.fwd(right_speed);
+			} else {
+				this.motors.left.rev(-right_speed);
+			}
+		}
+		this.stop(moving ? time : 0);
 	}
 
 	handle_command(data){
