@@ -53,9 +53,9 @@ class FCFS_TANK {
 		if (right_speed){
 			moving = true;
 			if (right_speed>0){
-				this.motors.left.fwd(right_speed);
+				this.motors.right.fwd(right_speed);
 			} else {
-				this.motors.left.rev(-right_speed);
+				this.motors.right.rev(-right_speed);
 			}
 		}
 		this.stop(moving ? time : 0);
