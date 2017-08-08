@@ -123,7 +123,7 @@ const say = require('./tts_drivers/espeak');
 
 const urlfilter = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/i //Regex url string.
 	robot.on('chat_message_with_name', data => {
-		if (urlfilter.search(data.message)===-1 && !data.anonymous) {  //If no urls and not anonymous
+		if (data.message.search(urlfilter)===-1 && !data.anonymous) {  //If no urls and not anonymous
 			say(data.message)
 		}
 	});
