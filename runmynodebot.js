@@ -119,14 +119,11 @@ robot.on('command_to_robot', data => {
 });
 
 //Setting up tts
-//const os = require('os');
-//const path = require('path');
+const say = require('./tts_drivers/espeak');
 
-//const temp = os.tmpdir();
-
-//const urlfilter = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/i //Regex url string.
-//robot.on('chat_message_with_nam', data => {
-//if (urlfilter.search(data.message)===-1 && !data.anonymous) {  //If no urls and not anonymous
-
-//}
-//});
+const urlfilter = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/i //Regex url string.
+	robot.on('chat_message_with_name', data => {
+		if (urlfilter.search(data.message)===-1 && !data.anonymous) {  //If no urls and not anonymous
+			say(data.message)
+		}
+	});
