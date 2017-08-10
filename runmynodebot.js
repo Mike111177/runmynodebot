@@ -54,13 +54,11 @@ var argv = require('yargs')
 			choices: fs.readdirSync(__dirname + path.sep + 'tts_drivers').map(fname => {return fname.slice(0,-3);}), //Reading from tts_drivers
 			type: 'string'
 		},
-		'play': {
-			alias: 'p',
-			describe: 'Play a sound everytime a command is triggered. Takes the next two positional arguments. First being the a command, second being a path to a .wav file to play. This can be used multiple times for multiple sounds.',
-			nargs: 2,
-			type: 'array',
-			coerce: (p)=>{return p.reduce((a,v,i,ar)=>{if(i%2){a[ar[i-1]]=path.resolve(v);}return a;},{})}, //Converts array into key value set.
-			default: {}
+		'config': {
+			alias: 'c',
+			describe: 'Path to a robot configuration file you would like to use.',
+			normalize: true,
+			default: __dirname + path.sep + 'configuration' + path.sep + 'defaults.yml'
 		}
 	})
 	//Check that bias is between -1 and 1
