@@ -59,7 +59,8 @@ var argv = require('yargs')
 			alias: 'c',
 			describe: 'Path to a robot configuration file you would like to use.',
 			normalize: true,
-			type: 'string'
+			type: 'string',
+			group: 'Hardware:'
 		},
 		//Debug options
 		'repl':{
@@ -97,9 +98,17 @@ var argv = require('yargs')
 	.help()
 	.argv;
 
-//Server connection setup
-const io = require('./RobotIO');
-var robot = new io({robotID: argv._[0]});
+const EventEmitter = require('events');
+var robot;
+
+if (!argv['no-connect']){
+	// Server connection setup
+	const io = require('./RobotIO');
+	robot = new io({robotID: argv._[0]});
+} else {
+	// If the no-connect flag was set, just have robot be a dud event emitter that can be used for debugging.
+	robot = new EventEmitter();
+}
 
 //Motor setup (Adafruit motorhat with four reversable dc motors and four servos)
 const five = require("johnny-five");
@@ -126,39 +135,11 @@ board.on('ready', function() {
 		drive_time: argv['drive-time'],
 		speed: argv.speed
 	});
-	
-	//Setting up servo motors 1-4
-	servos = [
-		//S1
-		new five.Servo({
-			address: 0x60,
-			controller: "PCA9685",
-			pin: 0,
-		}),
-		//S2
-		new five.Servo({
-			address: 0x60,
-			controller: "PCA9685",
-			pin: 1,
-		}),
-		//S3
-		new five.Servo({
-			address: 0x60,
-			controller: "PCA9685",
-			pin: 14,
-		}),
-		//S4
-		new five.Servo({
-			address: 0x60,
-			controller: "PCA9685",
-			pin: 15,
-		})];
 
 	if (argv.debug){
 		this.repl.inject({
 			drive_man: drive_man,
-			motors: motors,
-			servos: servos
+			motors: motors
 		});
 	}
 });
