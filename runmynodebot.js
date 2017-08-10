@@ -160,15 +160,10 @@ function stop(delay=500){
 	}, delay);
 }
 
-const { exec } = require('child_process');
-
 //Motors 1 and 2 (0 and 1) are drive motors, 3 and 4 (2 and 3) are accessories.
 robot.on('command_to_robot', data => {
 	if (argv.debug){
 		console.log(data);
-	}
-	if (data.command in argv.play){
-		exec('aplay -D plughw:2,0 ' + argv.play[data.command], {shell: '/bin/bash'});
 	}
 	
 	//Run the command through the drive manager first, if then if it was not a valid command 

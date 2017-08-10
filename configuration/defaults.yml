@@ -1,0 +1,34 @@
+# Define devices pluged into the pi.
+devices:
+  - type: adafruit_motorhat # Type selects a device driver from ./devices
+    name: motorhat # Name becomes the ID by which you or a plugin can reference this device later.
+    address: 0x60 # Address is specific to the motor hat. If it is not stated here it will default to 0x60
+    
+# Define driving configuration.
+driving:
+  mode: fcfs_tank # First come first serve with tank steering.
+  motors: # By default motors 1 and 2 are the left drive wheels, and 3 and 4 are the right drive wheels. 
+    left: 
+      - motorhat.M1 # motorhat (as defined above) will be queried for a so-called M1.
+      - motorhat.M2
+    right: 
+      - motorhat.M3
+      - motorhat.M4
+    
+# Define plugins
+plugins: 
+  sounds: # The built-in sounds plugin allows you to play .wav files over the speakers when the bot receives commands
+    LOUD: /home/pi/loud_noise.wav # Play loud_noise.wav when the bot recieves the command 'LOUD'
+#  simplemove: #The built-in simplemove plugin allows you to make primitive movments upon receiving a command
+#    OPEN: #Could be used for opining and closing a claw.
+#      motor: motorhat.M3
+#      action: forward
+#      time: 1
+#    CLOSE: 
+#      motor: motorhat.M3
+#      action: reverse
+#      time: 1
+
+# The simplemove plugin is commented out because motorhat.M3 is already used for driving. 
+# If you have a two motor drive mechanism, you can remove motorhat.M3 from driving 
+# and uncomment simplemove to use it. 

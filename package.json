@@ -8,19 +8,24 @@
 	},
 	"keywords": [
 		"nodebot",
-		"letsrobot.tv"
-		],
-		"author": "Mike111177",
-		"license": "GPL-3.0",
-		"bugs": {
-			"url": "https://github.com/Mike111177/runmynodebot/issues"
-		},
-		"homepage": "https://github.com/Mike111177/runmynodebot#readme",
-		"dependencies": { 
-			"yargs" : "*",
-			"socket.io-client" : "*",
-			"johnny-five" : "*",
-			"raspi-io" : "*"
-		},
-		"bin" : { "runmynodebot" : "./runmynodebot.js" }
+		"letsrobot.tv",
+		"runmyrobot"
+	],
+	"author": "Mike111177",
+	"license": "GPL-3.0",
+	"bugs": {
+		"url": "https://github.com/Mike111177/runmynodebot/issues"
+	},
+	"homepage": "https://github.com/Mike111177/runmynodebot#readme",
+	"dependencies": {
+		"johnny-five": "*",
+		"js-yaml": "*",
+		"raspi-io": "*",
+		"socket.io-client": "*",
+		"yamljs": "^0.3.0",
+		"yargs": "*"
+	},
+	"bin": {
+		"runmynodebot": "./runmynodebot.js"
+	}
 }
