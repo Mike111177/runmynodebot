@@ -56,9 +56,10 @@ var argv = require('yargs')
 		},
 		'config': {
 			alias: 'c',
+			default: null,
 			describe: 'Path to a robot configuration file you would like to use.',
 			normalize: true,
-			default: __dirname + path.sep + 'configuration' + path.sep + 'defaults.yml'
+			type: 'string'
 		}
 	})
 	//Check that bias is between -1 and 1
@@ -69,6 +70,8 @@ var argv = require('yargs')
 	.check((args) => {if (0<=args['turn-time'] && 0<=args['straight-time']) return true; else throw(new Error('Error: turn-time and straight-time must both be greater than 0.'));})
 	//Check that all sound files in play are .wav files.
 	.check(({play}) => {if (Object.values(play).every((str)=>str.endsWith('.wav'))) return true; else throw(new Error('Error: sound files must be .wav files.'));})
+	//Check for valid config format
+	.check(({config}) => {if (!config || config.endsWith('.yml') || config.endsWith('.json')) return true; else throw(new Error('Error: config file must be yaml compatibale files. (.yml or .json)'));})
 	//Argument debug. --yargs
 	.check((args) => {if (!args.yargs) return true; else {console.log(args); throw('yarg');}})
 	//Other options parse as strings
