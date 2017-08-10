@@ -43,5 +43,6 @@ class MotorHat extends PCA9865 {
 			super.getResource(str);
 		}
 	}
-	
 }
+
+module.exports = MotorHat;
