@@ -1,2 +1,2 @@
 # Wiring:
-![Wiring](Schematics/wiring_bb.png)
+![Wiring](Schematics/Wiring_bb.png)

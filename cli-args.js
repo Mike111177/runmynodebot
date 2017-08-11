@@ -73,7 +73,7 @@ module.exports = require('yargs')
 			type: 'boolean',
 			group: 'Debugging:'
 		},
-		'vserbose':{
+		'verbose':{
 			alias: 'v',
 			describe: 'Print each command sent to robot on console.',
 			type: 'boolean',
