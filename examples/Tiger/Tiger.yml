@@ -1,0 +1,31 @@
+# Define devices pluged into the pi.
+devices:
+  - type: adafruit_motorhat # Type selects a device driver from ./devices
+    name: motorhat # Name becomes the ID by which you or a plugin can reference this device later.
+    options:
+      address: 0x60 # Address is specific to the motor hat. If it is not stated here it will default to 0x60
+    
+# Define driving configuration.
+driving:
+  mode: fcfs_tank # First come first serve with tank steering.
+  motors: #Motor 1 is our left motor, motor 2 is our right.
+    left: 
+      - motorhat.M1
+    right: 
+      - motorhat.M2
+    
+# Define plugins
+plugins: 
+  sounds: # The built-in sounds plugin allows you to play .wav files over the speakers when the bot receives commands
+    options: 
+      FG: Cannon.wav  # Play cannon noise when the gun is fired
+  move: #The built-in move plugin allows you to make primitive movments upon receiving a command
+    options: 
+      LL: #Change aim of the gun. On the tiger tank the gun cycles continuosly.
+        motor: motorhat.M3
+        action: reverse
+        time: 500
+      FG: # Fire the gun.
+        motor: motorhat.M4
+        action: reverse
+        time: 4500

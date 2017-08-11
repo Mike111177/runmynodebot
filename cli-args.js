@@ -59,6 +59,13 @@ module.exports = require('yargs')
 			type: 'string',
 			group: 'Hardware:'
 		},
+		'example': {
+			alias: 'ex',
+			describe: 'Use one of the examples from /examples as your robot configuration.',
+			type: 'string',
+			group: 'Hardware:',
+			conflicts: 'config'
+		},
 		//Debug options
 		'repl':{
 			alias: ['debug', 'd'],
@@ -66,7 +73,7 @@ module.exports = require('yargs')
 			type: 'boolean',
 			group: 'Debugging:'
 		},
-		'verbose':{
+		'vserbose':{
 			alias: 'v',
 			describe: 'Print each command sent to robot on console.',
 			type: 'boolean',
