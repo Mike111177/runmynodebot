@@ -63,6 +63,7 @@ module.exports = require('yargs')
 			alias: 'ex',
 			describe: 'Use one of the examples from /examples as your robot configuration.',
 			type: 'string',
+			choices: fs.readdirSync(__dirname + path.sep + 'examples'),
 			group: 'Hardware:',
 			conflicts: 'config'
 		},

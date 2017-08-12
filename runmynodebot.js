@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var argv = require('./cli-args')
+var argv = require('./cli-args');
 
 const EventEmitter = require('events');
 var robot;

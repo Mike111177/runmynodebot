@@ -26,7 +26,7 @@ class MotorHat extends PCA9865 {
 			id = str.slice(5);
 			if (id in this.pin_config.MOTOR){
 				pins = this.pin_config.MOTOR[id];
-				pins.forEach((pin) => {this.pinCheck(pin)});
+				pins.forEach((pin) => {this.pinCheck(pin);});
 				return five.Motor({
 					pins: {
 						pwm: pins[0],

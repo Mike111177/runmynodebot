@@ -1,2 +1,4 @@
 /.project
 *.md.html
+.settings
+.jshintrc

@@ -5,10 +5,10 @@ class Sounds {
 	
 	constructor(config){
 		this.commands = {};
-		for (command in config){
+		for (var command in config){
 			let file = path.resolve(config[command]);
 			if (!file.endsWith('.wav')){
-				throw new Error('Sounds must be .wav files!')
+				throw new Error('Sounds must be .wav files!');
 			}
 			this.commands[command] = file;
 		}

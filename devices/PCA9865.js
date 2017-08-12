@@ -40,7 +40,7 @@ class PCA9865 {
 
 	pinCheck(pin){
 		if (this.used_pins.includes(pin)){
-			throw new Error('Pin ' + pin + ' on device \'' + this.name + +'\' has conflicts!');
+			throw new Error('Pin ' + pin + ' on device \'' + this.name + '\' has conflicts!');
 		} else {
 			this.used_pins.push(pin);
 		}
