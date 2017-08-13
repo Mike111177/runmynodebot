@@ -1,7 +1,7 @@
 //Parse command line.
 const fs = require('fs');
 const path = require('path');
-module.exports = require('yargs')
+var argv = require('yargs')
 	.usage('usage: sudo node $0 <robot-ID> [--opts]')
 	.options({
 		//Drive mode option
@@ -102,3 +102,11 @@ module.exports = require('yargs')
 	.version()
 	.help()
 	.argv;
+
+if (argv.example){
+	argv.config = argv.example;
+} else if (!argv.config){
+	argv.config = __dirname + path.sep + 'defaults.yml';
+}
+
+module.exports = argv;

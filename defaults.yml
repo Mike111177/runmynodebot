@@ -4,21 +4,34 @@
 
 # Define devices pluged into the pi.
 devices:
-  - type: adafruit_motorhat # Type selects a device driver from ./devices
-    name: motorhat # Name becomes the ID by which you or a plugin can reference this device later.
-    options: #Options contains any device specific information.
-      address: 0x60 # Address is specific to the motor hat. If it is not stated here it will default to 0x60
+  - type: Raspberry_Pi # Raspberry pi with default settings.
+    children: 
+    - type: PCA9865 # Making the Adafruit Motor hat
+      address: 0x60 # The motor hat defaults to 0x60
+      parts: 
+        - type: Motor
+          name: M1
+          preset: ADAFRUIT_V2.M1
+        - type: Motor
+          name: M2
+          preset: ADAFRUIT_V2.M2
+        - type: Motor
+          name: M3
+          preset: ADAFRUIT_V2.M3
+        - type: Motor
+          name: M4
+          preset: ADAFRUIT_V2.M4
     
 # Define driving configuration.
 driving:
   mode: fcfs_tank # First come first serve with tank steering.
   motors: # By default motors 1 and 2 are the left drive wheels, and 3 and 4 are the right drive wheels. 
     left: 
-      - motorhat.M1 # motorhat (as defined above) will be queried for a so-called M1.
-      - motorhat.M2
+      - M1
+      - M2
     right: 
-      - motorhat.M3
-      - motorhat.M4
+      - M3
+      - M4
     
 # Define plugins
 plugins: 
