@@ -18,33 +18,22 @@ const five = require("johnny-five");
 const Raspi = require("raspi-io");
 
 var motors, servos, drive_man;
-const board = new five.Board({
-	io: new Raspi(),
-	repl: argv.debug
-});
 
 const drive_mode = require('./drive_modes/'+argv['drive-mode']);
 
-board.on('ready', function() {
-	//Setting up dc motors 1-4
-	//From https://github.com/rwaldron/johnny-five/blob/master/lib/motor.js#L848
-	let mcfg = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V2;
-	motors = new five.Motors([mcfg.M1, mcfg.M2, mcfg.M3, mcfg.M4]);
+var devices;
+
+const hw = require('./hardware/config');
+hw(argv.config, argv.repl).then((hardware)=>{
+	devices = hardware[1];
 	
 	//Initializing drive manager with selected drive mode.
-	drive_man = new drive_mode({left: motors[1], right: motors[0]}, {
+	drive_man = new drive_mode({left: devices.M2, right: devices.M1}, {
 		bias: argv.bias,
 		turn_time: argv['turn-time'],
 		drive_time: argv['drive-time'],
 		speed: argv.speed
 	});
-
-	if (argv.debug){
-		this.repl.inject({
-			drive_man: drive_man,
-			motors: motors
-		});
-	}
 });
 
 
@@ -55,8 +44,8 @@ var handling = false;
 //Wait and then stop, default .5 seconds
 function stop(delay=500){
 	setTimeout(()=>{
-		motors[2].stop();
-		motors[3].stop();
+		devices.M3.stop();
+		devices.M4.stop();
 		handling = false;
 	}, delay);
 }
@@ -75,12 +64,12 @@ robot.on('command_to_robot', data => {
 		switch (data.command){
 		case 'LL': //Aim
 			handling = true;
-			motors[2].rev(255);
+			devices.M3.rev(255);
 			stop(250); //After 1/4 second
 			break;
 		case 'FG': //Fire
 			handling = true;
-			motors[3].rev(255);
+			devices.M4.rev(255);
 			stop(4500); //After 4.5 second
 			break;
 		}

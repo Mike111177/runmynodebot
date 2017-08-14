@@ -2,25 +2,24 @@
 # If you wish to use your own configuration, you may copy this file to a 
 # seperate directory and call it from the --config argument.
 
-# Define devices pluged into the pi.
-devices:
+# Define boards pluged into the pi.
+boards: 
   - type: Raspberry_Pi # Raspberry pi with default settings.
-    children: 
-    - type: PCA9865 # Making the Adafruit Motor hat
-      address: 0x60 # The motor hat defaults to 0x60
-      parts: 
-        - type: Motor
-          name: M1
-          preset: ADAFRUIT_V2.M1
-        - type: Motor
-          name: M2
-          preset: ADAFRUIT_V2.M2
-        - type: Motor
-          name: M3
-          preset: ADAFRUIT_V2.M3
-        - type: Motor
-          name: M4
-          preset: ADAFRUIT_V2.M4
+  
+#Defining usable parts
+parts: 
+  - id: M1
+    type: Motor
+    preset: ADAFRUIT_V2.M1
+  - id: M2
+    type: Motor
+    preset: ADAFRUIT_V2.M2
+  - id: M3
+    type: Motor
+    preset: ADAFRUIT_V2.M3
+  - id: M4
+    type: Motor
+    preset: ADAFRUIT_V2.M4
     
 # Define driving configuration.
 driving:
