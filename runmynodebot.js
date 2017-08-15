@@ -51,7 +51,7 @@ hw(argv.config, argv.repl).then((hardware)=>{
 	//Initialize plugins.
 	Object.keys(plugins).forEach(name =>{
 		plugin = plugins[name];
-		plugin.instance = new plugin.module(plugin.config, argv.config.getFile, devices, robot);
+		plugin.instance = new plugin.module(plugin.config.options, argv.config.getFile, devices, robot);
 	});
 	
 	//Initializing drive manager with selected drive mode.
@@ -63,44 +63,12 @@ hw(argv.config, argv.repl).then((hardware)=>{
 	});
 });
 
-
 //Setting up command handler
-
-var handling = false;
-
-//Wait and then stop, default .5 seconds
-function stop(delay=500){
-	setTimeout(()=>{
-		devices.M3.stop();
-		devices.M4.stop();
-		handling = false;
-	}, delay);
-}
-
-//Motors 1 and 2 (0 and 1) are drive motors, 3 and 4 (2 and 3) are accessories.
 robot.on('command_to_robot', data => {
 	if (argv.verbose){
 		console.log(data);
 	}
-	
-	//Run the command through the drive manager first, if then if it was not a valid command 
-	//and we are not handling another command at the moment, run the command here.
-	//This allows for simultaneous control of motors for movement and accessories.
-	//The drive manager must have it's own method for handling multiple commands to the drive motors.
-	if (!(drive_man.handle_command(data) || handling)){
-		switch (data.command){
-		case 'LL': //Aim
-			handling = true;
-			devices.M3.rev(255);
-			stop(250); //After 1/4 second
-			break;
-		case 'FG': //Fire
-			handling = true;
-			devices.M4.rev(255);
-			stop(4500); //After 4.5 second
-			break;
-		}
-	}
+	drive_man.handle_command(data);
 });
 
 //Setting up tts

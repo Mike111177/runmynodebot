@@ -20,5 +20,6 @@ class Sounds {
 			exec('aplay -D plughw:2,0 ' + this.commands[command], {shell: '/bin/bash'});
 		}
 	}
-
 }
+
+module.exports = Sounds;
