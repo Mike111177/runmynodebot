@@ -2,12 +2,6 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 const five = require('johnny-five');
 
-function loadConfig(inputFile, repl=false){
-	var config = yaml.safeLoad(fs.readFileSync(inputFile));
-	var hardware = setupHardware(config, repl);
-	return Promise.all([config, hardware]);
-}
-
 function setupHardware(conf, repl=false){
 	let boardsconf = conf.boards;
 	let partsconf = conf.parts;
@@ -68,4 +62,4 @@ function initPart(partconf, devicemap){
 	devicemap[opts.id] = new partClass(opts);
 }
 
-module.exports = loadConfig;
+module.exports = setupHardware;

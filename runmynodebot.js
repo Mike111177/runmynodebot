@@ -1,6 +1,27 @@
 #!/usr/bin/env node
 var argv = require('./cli-args');
 
+//Load plugins.
+var plugins = {};
+if (argv.config.plugins){
+	let names = Object.keys(argv.config.plugins);
+	names.forEach((name)=>{
+		let config = argv.config.plugins[name];
+		let mpath = config.path;
+		let module;
+		if (mpath) {
+			module = require(argv.config.getFile(mpath));
+		} else {
+			module = require('./plugins/' + name);
+		}
+		plugins[name] = {
+				name: name,
+				module: module,
+				config: config
+		};
+	});
+}
+
 const EventEmitter = require('events');
 var robot;
 
@@ -25,7 +46,13 @@ var devices;
 
 const hw = require('./hardware/config');
 hw(argv.config, argv.repl).then((hardware)=>{
-	devices = hardware[1];
+	devices = hardware;
+	
+	//Initialize plugins.
+	Object.keys(plugins).forEach(name =>{
+		plugin = plugins[name];
+		plugin.instance = new plugin.module(plugin.config, argv.config.getFile, devices, robot);
+	});
 	
 	//Initializing drive manager with selected drive mode.
 	drive_man = new drive_mode({left: devices.M2, right: devices.M1}, {

@@ -3,15 +3,16 @@ const path = require('path');
 
 class Sounds {
 	
-	constructor(config){
+	constructor(config, getFile, devicemap, robot){
 		this.commands = {};
 		for (var command in config){
-			let file = path.resolve(config[command]);
+			let file = getFile(config[command]);
 			if (!file.endsWith('.wav')){
 				throw new Error('Sounds must be .wav files!');
 			}
 			this.commands[command] = file;
 		}
+		robot.on('command_to_robot', (command) => this.handle_command(command));
 	}
 	
 	handle_command(command){
