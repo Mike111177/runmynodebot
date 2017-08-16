@@ -1,31 +1,60 @@
-# Define devices pluged into the pi.
-devices:
-  - type: adafruit_motorhat # Type selects a device driver from ./devices
-    name: motorhat # Name becomes the ID by which you or a plugin can reference this device later.
-    options:
-      address: 0x60 # Address is specific to the motor hat. If it is not stated here it will default to 0x60
+boards: 
+  - type: Raspberry_Pi
+ 
+parts: 
+  - id: M1
+    type: Motor
+    preset: ADAFRUIT_V2.M1
+
+  - id: M2
+    type: Motor
+    preset: ADAFRUIT_V2.M2
+
+  - id: M3
+    type: Motor
+    preset: ADAFRUIT_V2.M3
+
+  - id: M4
+    type: Motor
+    preset: ADAFRUIT_V2.M4
+
+  - id: GUN_RESET #The tiger tank has a switch that triggers when the gun is reset.
+    type: Button
+    pin: GPIO27 #The top right pin of the pi.
+    isPullup: true #Enable the internal pullup resistor, the switch connects GPIO27 to ground.
+
+  - id: LASER # For the gun mounted laser
+    type: Led
+    pin: 0
+    controller: PCA9685
+    address: 0x60
     
 # Define driving configuration.
 driving:
   mode: fcfs_tank # First come first serve with tank steering.
   motors: #Motor 1 is our left motor, motor 2 is our right.
     left: 
-      - motorhat.M1
+      - M1
     right: 
-      - motorhat.M2
+      - M2
     
 # Define plugins
 plugins: 
   sounds: # The built-in sounds plugin allows you to play .wav files over the speakers when the bot receives commands
     options: 
       FG: Cannon.wav  # Play cannon noise when the gun is fired
-  move: #The built-in move plugin allows you to make primitive movments upon receiving a command
+  move: 
     options: 
-      LL: #Change aim of the gun. On the tiger tank the gun cycles continuosly.
-        motor: motorhat.M3
+      LL: #Aim the gun
+        motor: M3
         action: reverse
         time: 500
-      FG: # Fire the gun.
-        motor: motorhat.M4
+      FG: #Fire the gun
+        motor: M4
         action: reverse
-        time: 4500
+        time: 5000 # This is more than enough time.
+  motorstop:
+    path: motorstop.js #Custom plugins require a path to find them, the path may be relative to this config file.
+    options: 
+      - button: GUN_RESET
+        motor: M4 #Stop the motor, the timer from the move plugin will still have to complete to send the FG command again.
