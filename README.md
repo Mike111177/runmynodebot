@@ -11,10 +11,23 @@ cd ~
 git clone https://github.com/Mike111177/runmynodebot.git
 cd runmynodebot/
 npm install --save
+cd ~
 ```
 ## Configuration
 Warning: This software is in very early development, your configuration may not survive updates.
-## Running
 ```bash
-sudo node runmynodebot/runmynodebot.js <Your robot ID>
+node runmynodebot/runmynodebot.js create myrobot.yml
+```
+## Running
+### The default configuration
+```bash
+sudo node runmynodebot/runmynodebot.js run <Your robot ID>
+```
+### A custom configuration
+```bash
+sudo node runmynodebot/runmynodebot.js run <Your robot ID> --config myrobot.yml
+```
+### A configuration from the examples folder
+```bash
+sudo node runmynodebot/runmynodebot.js run <Your robot ID> --example Tiger
 ```
