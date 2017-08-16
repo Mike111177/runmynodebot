@@ -44,7 +44,7 @@ const Raspi = require("raspi-io");
 
 var motors, servos, drive_man;
 
-const drive_mode = require('./drive_modes/'+argv['drive-mode']);
+const drive_mode = require('./drive_modes/'+config.driving.mode);
 
 var devices;
 
@@ -52,28 +52,27 @@ const hw = require('./hardware/config');
 hw(config, argv.repl).then((hardware)=>{
 	devices = hardware;
 	
+	// Initializing drive manager with selected drive mode.
+	let drive_opts = {};
+	// Command line arguments overwrite config values.
+	let drive_args = ['bias', 'speed', 'turn-time', 'straight-time'].reduce((acc, key) => {
+		if (argv[key]){
+			acc[key] = argv[key];
+		} 
+		return acc;
+	}, {});
+	Object.assign(drive_opts, config.driving, drive_args);
+	drive_man = new drive_mode(drive_opts, config.getFile, devices, robot);
+	
 	//Initialize plugins.
 	Object.keys(plugins).forEach(name =>{
 		plugin = plugins[name];
 		plugin.instance = new plugin.module(plugin.config.options, config.getFile, devices, robot);
 	});
-	
-	//Initializing drive manager with selected drive mode.
-	drive_man = new drive_mode({left: devices.M2, right: devices.M1}, {
-		bias: argv.bias,
-		turn_time: argv['turn-time'],
-		drive_time: argv['drive-time'],
-		speed: argv.speed
-	});
 });
 
-//Setting up command handler
-robot.on('command_to_robot', data => {
-	if (argv.verbose){
-		console.log(data);
-	}
-	drive_man.handle_command(data);
-});
+// If verbose, output command data.
+if (argv.verbose) robot.on('command_to_robot', console.log);
 
 //Setting up tts
 const say = require('./tts_drivers/'+argv['tts-driver']);

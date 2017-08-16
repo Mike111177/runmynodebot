@@ -8,16 +8,24 @@
  * Like in the python sample, this causes a characteristic jerkiness 
  * when moving for a duration.
  */
+const five = require('johnny-five');
+
 class FCFS_TANK {
 	
-	constructor(motors, opts={}){
-		this.motors = motors;
+	constructor(config, getFile, devicemap, robot){
+		this.config = config;
 		
-		this.speed = opts.speed || 255;
-		this.turn_time = opts.turn_time || 500;
-		this.drive_time = opts.drive_time || 500;
+		// Motor setup
+		this.motors = {};
+		//Puts all the motors into a special group that lets them be controlled together.
+		this.motors.left = five.Motors(config.motors.left.map(id => devicemap[id]));
+		this.motors.right = five.Motors(config.motors.right.map(id => devicemap[id]));
 		
-		this.bias = opts.bias || 0;
+		this.speed = config.speed || 255;
+		this.turn_time = config.turn_time || 500;
+		this.drive_time = config.drive_time || 500;
+		
+		this.bias = config.bias || 0;
 		this.left_bias = this.bias<0? 1+this.bias: 1;
 		this.right_bias = this.bias>0? 1-this.bias: 1;
 		
@@ -30,6 +38,9 @@ class FCFS_TANK {
 				'SL': () => {this.drive(-Math.floor(this.left_bias*this.speed/2), Math.floor(this.right_bias*this.speed/2), this.turn_time/2);},
 				'SR': () => {this.drive(Math.floor(this.left_bias*this.speed/2), -Math.floor(this.right_bias*this.speed/2), this.turn_time/2);}				
 		};
+		
+		// Set command trigger.
+		robot.on('command_to_robot', this.handle_command.bind(this));
 	}
 	
 	stop(delay){
