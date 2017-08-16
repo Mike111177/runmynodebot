@@ -2,12 +2,18 @@
 const fs = require('fs');
 const yaml = require('js-yaml');
 const path = require('path');
+const colors = require('colors/safe');
 
-function buildConfig(fpath){
-	if (fpath===null){
-		fpath = __dirname + path.sep + 'hardware' + path.sep + 'defaults.yml';
+function buildConfig({config, example}){
+	let fpath;
+	if (config){
+		fpath = path.resolve(config);
+	} else if (example){
+		fpath = path.resolve(__dirname, 'examples', example, example+'.yml');
+	} else {
+		fpath = path.resolve(__dirname, 'hardware', 'defaults.yml');
 	}
-	fpath = path.resolve(fpath);
+	console.log(colors.green('Loading hardware config:'), colors.white(path.basename(fpath)));
 	let folder = path.resolve(fpath, '..');
 	let conf = yaml.safeLoad(fs.readFileSync(fpath));
 	conf.getFile = (file) => path.resolve(folder, file);
@@ -68,10 +74,9 @@ var argv = require('yargs')
 		'config': {
 			alias: 'c',
 			describe: 'Path to a robot configuration file you would like to use.',
-			default: null,
-			coerce: buildConfig,
 			type: 'string',
-			group: 'Hardware:'
+			group: 'Hardware:',
+			conflicts: 'example'
 		},
 		'example': {
 			alias: 'ex',
@@ -107,7 +112,7 @@ var argv = require('yargs')
 	//Check that move times are greater than zero.
 	.check((args) => {if (0<=args['turn-time'] && 0<=args['straight-time']) return true; else throw(new Error('Error: turn-time and straight-time must both be greater than 0.'));})
 	//Check for valid config format
-	.check(({config}) => {if (config) return true; else throw(new Error('Error reading config file. Make sure it is a compatible format. (.yml or .json)'));})
+	.check((args) => args.configuration = buildConfig(args))
 	//Argument debug. --yargs
 	.check((args) => {if (!args.yargs) return true; else {console.log(args); throw('yarg');}})
 	//Other options parse as strings

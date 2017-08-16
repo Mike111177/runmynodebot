@@ -1,24 +1,28 @@
 #!/usr/bin/env node
+const colors = require('colors/safe');
+
 var argv = require('./cli-args');
+var config = argv.configuration;
 
 //Load plugins.
 var plugins = {};
-if (argv.config.plugins){
-	let names = Object.keys(argv.config.plugins);
+if (config.plugins){
+	let names = Object.keys(config.plugins);
 	names.forEach((name)=>{
-		let config = argv.config.plugins[name];
-		let mpath = config.path;
+		let conf = config.plugins[name];
+		let mpath = conf.path;
 		let module;
 		if (mpath) {
-			module = require(argv.config.getFile(mpath));
+			module = require(config.getFile(mpath));
 		} else {
 			module = require('./plugins/' + name);
 		}
 		plugins[name] = {
 				name: name,
 				module: module,
-				config: config
+				config: conf
 		};
+		console.log(colors.green('Plugin loaded:'), colors.white(name+(mpath?' ('+mpath+')':'')));
 	});
 }
 
@@ -45,13 +49,13 @@ const drive_mode = require('./drive_modes/'+argv['drive-mode']);
 var devices;
 
 const hw = require('./hardware/config');
-hw(argv.config, argv.repl).then((hardware)=>{
+hw(config, argv.repl).then((hardware)=>{
 	devices = hardware;
 	
 	//Initialize plugins.
 	Object.keys(plugins).forEach(name =>{
 		plugin = plugins[name];
-		plugin.instance = new plugin.module(plugin.config.options, argv.config.getFile, devices, robot);
+		plugin.instance = new plugin.module(plugin.config.options, config.getFile, devices, robot);
 	});
 	
 	//Initializing drive manager with selected drive mode.

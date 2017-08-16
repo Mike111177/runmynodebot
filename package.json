@@ -22,7 +22,8 @@
 		"js-yaml": "^3.9.1",
 		"raspi-io": "^8.0.1",
 		"socket.io-client": "^2.0.3",
-		"yargs": "^8.0.2"
+		"yargs": "^8.0.2",
+		"colors": "^1.1.2"
 	},
 	"bin": {
 		"runmynodebot": "./runmynodebot.js"
