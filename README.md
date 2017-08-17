@@ -8,27 +8,28 @@ sudo apt install nodejs
 ### Install runmynodebot
 ```bash
 cd ~
-git clone https://github.com/Mike111177/runmynodebot.git
-cd runmynodebot/
-npm install --save
-cd ~
+npm install -g https://github.com/Mike111177/runmynodebot.git
+```
+##### If you are on a Raspberry Pi then do:
+```bash
+npm install -g raspi-io
 ```
 ## Configuration
 Warning: This software is in very early development, your configuration may not survive updates.
 ```bash
-node runmynodebot/runmynodebot.js create myrobot.yml
+node runmynodebot create myrobot.yml
 ```
 To see more about configuration files see [Configuration](docs/Configuration.md)
 ## Running
 ### The default configuration
 ```bash
-sudo node runmynodebot/runmynodebot.js run <Your robot ID>
+sudo runmynodebot run <Your robot ID>
 ```
 ### A custom configuration
 ```bash
-sudo node runmynodebot/runmynodebot.js run <Your robot ID> --config myrobot.yml
+sudo runmynodebot run <Your robot ID> --config myrobot.yml
 ```
 ### A configuration from the examples folder
 ```bash
-sudo node runmynodebot/runmynodebot.js run <Your robot ID> --example Tiger
+sudo runmynodebot run <Your robot ID> --example Tiger
 ```

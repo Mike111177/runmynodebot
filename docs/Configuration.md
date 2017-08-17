@@ -9,9 +9,9 @@ Currently in version 1.1.0 the only supported board is the Raspberry Pi.
 
 Boards used in your robot must be defined in the `boards:` section of your config file by their hardware "type". This table shows all supported IO boards and their respective types.
 
-Board | Type
------ | -----
-Raspberry Pi | `Raspberry_Pi`
+Board | Type | Requirements
+----- | ----- | -----------
+Raspberry Pi | `Raspberry_Pi` | [Raspi-IO](https://github.com/bryan-m-hughes/raspi-io)
 
 Here is a sample `boards:` config.
 ```yaml
