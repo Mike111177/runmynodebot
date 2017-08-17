@@ -20,12 +20,12 @@ parts:
 # Define driving configuration.
 driving:
   mode: fcfs_tank # First come first serve with tank steering.
-  motors: # By default motors 1 and 2 are the left drive wheels, and 3 and 4 are the right drive wheels. 
+  motors: # By default motors 1 and 3 are the left drive wheels, and 2 and 4 are the right drive wheels. 
     left: 
       - M1
-      - M2
-    right: 
       - M3
+    right: 
+      - M2
       - M4
     
 # Define plugins
