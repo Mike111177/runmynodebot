@@ -18,6 +18,7 @@ Warning: This software is in very early development, your configuration may not 
 ```bash
 node runmynodebot/runmynodebot.js create myrobot.yml
 ```
+To see more about configuration files see [Configuration](docs/Configuration.md)
 ## Running
 ### The default configuration
 ```bash

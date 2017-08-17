@@ -48,6 +48,6 @@ plugins:
 #        dir: rev
 #        time: 1000
 
-# The move plugin is commented out because motorhat.M3 is already used for driving. 
+# The move plugin is commented out because M3 is already used for driving. 
 # If you have a two motor drive mechanism, you can remove motorhat.M3 from driving 
 # and uncomment move to use it. 
