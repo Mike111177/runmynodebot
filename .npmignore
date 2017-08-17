@@ -1,2 +1,7 @@
+/.project
+*.md.html
+.settings
+.jshintrc
 *.md
 docs/
+examples/*/instructions

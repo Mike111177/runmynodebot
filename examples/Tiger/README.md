@@ -1,5 +1,5 @@
 # Wiring:
-![Wiring](Schematics/Wiring_bb.png)
+![Wiring](instructions/Wiring_bb.png)
 
 # Run the bot:
 ```bash
