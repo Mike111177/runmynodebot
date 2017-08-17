@@ -1,4 +1,3 @@
-
 function stop(motor, delay=500){
 	setTimeout(()=>{
 		motor.stop();
@@ -16,7 +15,7 @@ class Move {
 			Object.assign(cmd, config[command], {handling: false});
 			this.commands[command] = cmd;
 		}
-		robot.on('command_to_robot', (data) => this.handle_command(data));
+		robot.on('command_to_robot', this.handle_command.bind(this));
 	}
 	
 	handle_command(data){
