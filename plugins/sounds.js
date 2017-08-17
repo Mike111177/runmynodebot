@@ -12,12 +12,12 @@ class Sounds {
 			}
 			this.commands[command] = file;
 		}
-		robot.on('command_to_robot', (command) => this.handle_command(command));
+		robot.on('command_to_robot', this.handle_command.bind(this));
 	}
 	
-	handle_command(command){
-		if (command in this.commands){
-			exec('aplay -D plughw:2,0 ' + this.commands[command], {shell: '/bin/bash'});
+	handle_command(data){
+		if (data.command in this.commands){
+			exec('aplay -D plughw:2,0 ' + this.commands[data.command], {shell: '/bin/bash'});
 		}
 	}
 }
