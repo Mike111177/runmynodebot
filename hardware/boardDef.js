@@ -22,7 +22,9 @@ function buildBoardDef(conf){
 		if (def.defaults){
 			Object.assign(opts, def.defaults);
 		}
-		Object.assign(opts, conf);
+		if (conf.options) {
+		  Object.assign(opts, conf.options);
+		}
 		if (def.build_opts){
 			Object.assign(opts, def.build_opts());
 		}

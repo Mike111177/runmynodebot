@@ -50,11 +50,13 @@ function readBoards(boardsConf, repl=false){
 
 const findPreset = require('./part_presets');
 function initPart(partconf, devicemap){
-	let opts = {id: partconf.type};
+	let opts = {id: partconf.id || partconf.type};
 	if (partconf.preset){
 		Object.assign(opts, findPreset(partconf));
 	}
-	Object.assign(opts, partconf);
+	if (partconf.options) {
+	   Object.assign(opts, partconf.options);
+	}
 	if (opts.board && opts.board in devicemap){
 		opts.board = devicemap[opts.board];
 	}

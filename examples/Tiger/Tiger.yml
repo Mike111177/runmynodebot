@@ -20,14 +20,16 @@ parts:
 
   - id: GUN_RESET #The tiger tank has a switch that triggers when the gun is reset.
     type: Button
-    pin: GPIO27 #The top right pin of the pi.
-    isPullup: true #Enable the internal pullup resistor, the switch connects GPIO27 to ground.
+    options: 
+      pin: GPIO27 #The top right pin of the pi.
+      isPullup: true #Enable the internal pullup resistor, the switch connects GPIO27 to ground.
 
   - id: LASER # For the gun mounted laser
     type: Led
-    pin: 0
-    controller: PCA9685
-    address: 0x60
+    options: 
+      pin: 0
+      controller: PCA9685
+      address: 0x60
     
 # Define driving configuration.
 driving:

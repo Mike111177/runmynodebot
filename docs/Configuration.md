@@ -29,21 +29,23 @@ Below is a sample config for a robot with a single LED.
 ```yaml
 parts:
   - id: STATUS # The id of any part (or board for that matter) is arbitrary, as long as it is unique.
-    type: Led # The type is in-fact case sensitive. 
-    pin: 0 # All of these fields get pushed directly to the johnny-five library.
-    controller: PCA9685 # This controller and address allows an LED to be powered by the adrafruit motorhats 'Xtra PWMS' 
-    address: 0x60
+    type: Led # The type is in-fact case sensitive.
+    options:  
+      pin: 0 # All of these fields get pushed directly to the johnny-five library.
+      controller: PCA9685 # This controller and address allows an LED to be powered by the adrafruit motorhats 'Xtra PWMS' 
+      address: 0x60
 ```
 
 For more info on parts and their configuration see [Part Descriptors](Part_Descriptors.md).
 
-You can also use presets on part types that have them available:
+You can also use presets instead of options on part types that have them available:
 ```yaml
 parts: 
   - id: M1
     type: Motor
     preset: ADAFRUIT_V2.M1 # Adafruit motorhat M1
 ```
+If you use both a preset and options on a part, the options will take priority.
 
 ## Driving
 The driving section defines how the robot moves around when receiving commands from letsrobot.tv

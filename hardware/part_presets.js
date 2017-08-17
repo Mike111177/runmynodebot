@@ -11,7 +11,7 @@ function getPreset(partConf){
 			return acc[v];
 		}, presets);
 	} catch (E) {
-		throw new Error('Invalid Prefix!');
+		throw new Error('Invalid Preset!');
 	}
 
 }
