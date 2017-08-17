@@ -1,5 +1,7 @@
 const five = require('johnny-five');
 
+const { dive } = require('../util');
+
 const presets = {
 		Motor: five.Motor.SHIELD_CONFIGS
 };
@@ -7,9 +9,7 @@ const presets = {
 function getPreset(partConf){
 	try {
 		let path = partConf.type + '.' + partConf.preset;
-		return path.split('.').reduce((acc, v) => {
-			return acc[v];
-		}, presets);
+		return dive(presets, path);
 	} catch (E) {
 		throw new Error('Invalid Preset!');
 	}
