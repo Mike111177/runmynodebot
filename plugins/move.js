@@ -19,7 +19,7 @@ class Move {
 	}
 	
 	handle_command(data){
-		if (data.command in this.commands){
+		if (data.key_position === 'down' && data.command in this.commands){
 			let cmd = this.commands[data.command];
 			if (!cmd.handling){
 				cmd.handling = true;
