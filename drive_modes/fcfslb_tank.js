@@ -1,16 +1,12 @@
 /**
- * This drive manager is abbreviated FCFS for "First Come First Serve".
- * This behaves similarly to the controller.py found at 
- * https://github.com/runmyrobot/runmyrobot/blob/master/controller.py
- * in that it ignores any commands given to it during motion, and then 
- * responds to the next command given after motion stops.
- * 
- * Like in the python sample, this causes a characteristic jerkiness 
- * when moving for a duration.
+ * This drive manager works on a modified first come first basis (see fcfs_tank),
+ * however upon completion of each run command, it checks to see if the command
+ * was resent near the end of the movement, and if it was, to continue the movement.
+ * This should result in smoother continuous movement.
  */
 const five = require('johnny-five');
 
-class FCFS_TANK {
+class FCFSLB_TANK {
 	
 	constructor(config, getFile, devicemap, robot){
 		this.config = config;
@@ -24,6 +20,7 @@ class FCFS_TANK {
 		this.speed = config.speed || 255;
 		this.turn_time = config.turn_time || 500;
 		this.drive_time = config.drive_time || 500;
+		this.last = {};
 		
 		this.bias = config.bias || 0;
 		this.left_bias = this.bias<0? 1+this.bias: 1;
@@ -43,11 +40,16 @@ class FCFS_TANK {
 		robot.on('command_to_robot', this.handle_command.bind(this));
 	}
 	
-	stop(delay){
-		setTimeout(()=>{
-			this.motors.left.stop();//Stop both motors
-			this.motors.right.stop();
-			this.handling = false; //Allow next command to be received
+	track(delay){
+		let lbtime = delay/5;
+		var timer = setInterval(()=>{
+			// If the command is the same as the runnning command and it is not stale, do nothing and continue.
+			if (!(this.last.cmd === this.handling && Date.now()-this.last.time<lbtime)){
+				this.motors.left.stop();//Stop both motors
+				this.motors.right.stop();
+				this.handling = false; //Allow next command to be received
+				clearInterval(timer);
+			}
 		}, delay);
 	}
 	
@@ -70,7 +72,7 @@ class FCFS_TANK {
 			}
 		}
 		if (moving){
-			this.stop(time);
+			this.track(time);
 		} else {
 			this.handling = false;
 		}
@@ -78,8 +80,10 @@ class FCFS_TANK {
 
 	handle_command(data){
 		if (data.command in this.commands){
+			this.last.cmd = data.command;
+			this.last.time = Date.now();
 			if (!this.handling){
-				this.handling = true; //Blocking further commands for now.
+				this.handling = this.lastcmd; //Blocking further commands for now.
 				this.commands[data.command]();
 			}
 			return true; // One of our commands, return true to inform main process not to run it as an accessory command.
@@ -89,4 +93,4 @@ class FCFS_TANK {
 	}
 }
 
-module.exports = FCFS_TANK;
+module.exports = FCFSLB_TANK;
