@@ -1,8 +1,10 @@
 var boardmap = {
 		Raspberry_Pi:{
-			build_opts: (opts)=>{
-				const Raspi = require('Raspi-IO');
-				return {io: new Raspi()};
+			defaults:{
+				get io() {
+					const Raspi = require('Raspi-IO');
+					return new Raspi();
+				}
 			}
 		},
 		PCA9865: {
@@ -15,18 +17,16 @@ var boardmap = {
 		}
 };
 
+const { softAssign } = require('../util'); 
 function buildBoardDef(conf){
 	let opts = {id: conf.id || conf.type};
 	if (conf.type in boardmap){
 		let def = boardmap[conf.type];
+		if (conf.options) {
+			Object.assign(opts, conf.options);
+		}
 		if (def.defaults){
 			Object.assign(opts, def.defaults);
-		}
-		if (conf.options) {
-		  Object.assign(opts, conf.options);
-		}
-		if (def.build_opts){
-			Object.assign(opts, def.build_opts());
 		}
 	}
 	return opts;

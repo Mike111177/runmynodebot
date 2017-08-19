@@ -49,6 +49,7 @@ function readBoards(boardsConf, repl=false){
 }
 
 const findPreset = require('./part_presets');
+const { dive } = require('../util');
 function initPart(partconf, devicemap){
 	let opts = {id: partconf.id || partconf.type};
 	if (partconf.preset){
@@ -60,7 +61,8 @@ function initPart(partconf, devicemap){
 	if (opts.board && opts.board in devicemap){
 		opts.board = devicemap[opts.board];
 	}
-	let partClass = five[partconf.type];
+	// Find the part type by literally calling it from the defined type.
+	let partClass = dive(five, partconf.type);
 	devicemap[opts.id] = new partClass(opts);
 }
 
