@@ -54,9 +54,4 @@ plugins:
       FG: #Fire the gun
         motor: M4
         action: reverse
-        time: 5000 # This is more than enough time.
-  motorstop:
-    path: motorstop.js #Custom plugins require a path to find them, the path may be relative to this config file.
-    options: 
-      - button: GUN_RESET
-        motor: M4 #Stop the motor, the timer from the move plugin will still have to complete to send the FG command again.
+        time: 4500
