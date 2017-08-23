@@ -75,16 +75,13 @@ var argv = require('yargs')
 				alias: 'c',
 				describe: 'Path to a robot configuration file you would like to use.',
 				type: 'string',
-				group: 'Hardware:',
-				conflicts: 'example'
+				group: 'Hardware:'
 			},
 			'example': {
 				alias: 'ex',
 				describe: 'Use one of the examples from /examples as your robot configuration.',
 				type: 'string',
-				choices: fs.readdirSync(__dirname + path.sep + 'examples'),
 				group: 'Hardware:',
-				conflicts: 'config'
 			},
 			//Debug options
 			'repl':{

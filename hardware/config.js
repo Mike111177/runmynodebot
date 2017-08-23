@@ -5,12 +5,12 @@ const five = require('johnny-five');
 function setupHardware(conf, repl=false){
 	let boardsconf = conf.boards;
 	let partsconf = conf.parts;
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve, reject) => { 
 		var devicemap = {};
 		let board_opts = readBoards(boardsconf, repl);
 		var boards = new five.Boards(board_opts.real);
 		boards.on('ready', ()=>{
-			this.each((board) => {
+			boards.forEach((board) => {
 				devicemap[board.id] = board;
 			});
 			board_opts.virtual.forEach((vboard)=>{
@@ -20,7 +20,7 @@ function setupHardware(conf, repl=false){
 				initPart(partcfg, devicemap);
 			});
 			if (repl){
-				this.repl.inject({
+				boards.repl.inject({
 					devices: devicemap
 				});
 			}

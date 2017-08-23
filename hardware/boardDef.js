@@ -2,7 +2,7 @@ var boardmap = {
 		Raspberry_Pi:{
 			defaults:{
 				get io() {
-					const Raspi = require('Raspi-IO');
+					const Raspi = require('raspi-io');
 					return new Raspi();
 				}
 			}
