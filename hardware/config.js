@@ -23,6 +23,7 @@ function setupHardware(conf, repl=false){
 				boards.repl.inject({
 					devices: devicemap
 				});
+				devicemap.repl = boards.repl;
 			}
 			resolve(devicemap);
 		});

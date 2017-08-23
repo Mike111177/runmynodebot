@@ -52,6 +52,10 @@ const hw = require('./hardware/config');
 hw(config, argv.repl).then((hardware)=>{
 	devices = hardware;
 	
+	if (argv.repl){
+		hardware.repl.inject({robot: robot});
+	}
+	
 	// Initializing drive manager with selected drive mode.
 	let drive_opts = {};
 	// Command line arguments overwrite config values.
