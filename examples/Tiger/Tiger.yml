@@ -43,10 +43,10 @@ plugins:
     options: 
       LL: #Aim the gun
         motor: M3
-        action: reverse
+        dir: rev
         time: 500
         key_positions: ['down', 'intermediate']
       FG: #Fire the gun
         motor: M4
-        action: reverse
+        dir: rev
         time: 4500
