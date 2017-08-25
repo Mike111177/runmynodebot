@@ -28,13 +28,14 @@ class FCFSLB_TANK {
 		this.right_bias = this.bias>0? 1-this.bias: 1;
 		
 		this.handling = false;
+		this.timer = null;
 		this.commands = {
 				'F': () => {this.drive(Math.floor(this.left_bias*this.speed), Math.floor(this.right_bias*this.speed), this.drive_time);},
 				'B': () => {this.drive(-Math.floor(this.left_bias*this.speed), -Math.floor(this.right_bias*this.speed), this.drive_time);},
 				'L': () => {this.drive(-Math.floor(this.left_bias*this.turn_speed), Math.floor(this.right_bias*this.turn_speed), this.turn_time);},
 				'R': () => {this.drive(Math.floor(this.left_bias*this.turn_speed), -Math.floor(this.right_bias*this.turn_speed), this.turn_time);},
 				'SL': () => {this.drive(-Math.floor(this.left_bias*this.turn_speed), Math.floor(this.right_bias*this.turn_speed), this.turn_time/2);},
-				'SR': () => {this.drive(Math.floor(this.left_bias*this.turn_speed), -Math.floor(this.right_bias*this.turn_speed), this.turn_time/2);}			
+				'SR': () => {this.drive(Math.floor(this.left_bias*this.turn_speed), -Math.floor(this.right_bias*this.turn_speed), this.turn_time/2);}
 		};
 		
 		// Set command trigger.
@@ -43,15 +44,22 @@ class FCFSLB_TANK {
 	
 	track(delay){
 		let lbtime = delay/5;
-		var timer = setInterval(()=>{
+		this.timer = setInterval(()=>{
 			// If the command is the same as the runnning command and it is not stale, do nothing and continue.
 			if (!(this.last.cmd === this.handling && Date.now()-this.last.time<lbtime)){
-				this.motors.left.stop();//Stop both motors
-				this.motors.right.stop();
-				this.handling = false; //Allow next command to be received
-				clearInterval(timer);
+				stop();
 			}
 		}, delay);
+	}
+	
+	stop() {
+		this.motors.left.stop();//Stop both motors
+		this.motors.right.stop();
+		this.handling = false; //Allow next command to be received
+		if (this.timer){
+			clearInterval(this.timer);
+			this.timer = null;
+		}
 	}
 	
 	drive(left_speed, right_speed, time){
@@ -80,7 +88,7 @@ class FCFSLB_TANK {
 	}
 
 	handle_command(data){
-		if (data.command in this.commands){
+		if (data.key_position !== 'up' && data.command in this.commands){
 			this.last.cmd = data.command;
 			this.last.time = Date.now();
 			if (!this.handling){
@@ -88,6 +96,9 @@ class FCFSLB_TANK {
 				this.commands[data.command]();
 			}
 			return true; // One of our commands, return true to inform main process not to run it as an accessory command.
+		} else if (data.command==='stop'){
+			this.stop();
+			return true;
 		} else {
 			return false;// Not one of our commands, return false to inform main process that it is an accessory command.
 		}
