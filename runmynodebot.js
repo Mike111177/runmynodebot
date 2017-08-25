@@ -52,10 +52,6 @@ const hw = require('./hardware/config');
 hw(config, argv.repl).then((hardware)=>{
 	devices = hardware;
 	
-	if (argv.repl){
-		hardware.repl.inject({robot: robot});
-	}
-	
 	// Initializing drive manager with selected drive mode.
 	let drive_opts = {};
 	// Command line arguments overwrite config values.
@@ -73,6 +69,9 @@ hw(config, argv.repl).then((hardware)=>{
 		plugin = plugins[name];
 		plugin.instance = new plugin.module(plugin.config.options, config.getFile, devices, robot);
 	});
+	if (argv.repl){
+		hardware.repl.inject({robot: robot, plugins: plugins});
+	}
 });
 
 // If verbose, output command data.
