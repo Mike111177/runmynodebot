@@ -20,7 +20,7 @@ class Move {
 	
 	handle_command(data){
 		// If it is a valid command and for that command a valid key position.
-		if (data.command in this.commands && data.key_position in this.commands[data.command].key_positions){
+		if (data.command in this.commands && this.commands[data.command].key_positions.includes(data.key_position)){
 			let cmd = this.commands[data.command];
 			if (!cmd.handling){
 				cmd.handling = true;
