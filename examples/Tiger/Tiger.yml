@@ -27,12 +27,12 @@ parts:
     
 # Define driving configuration.
 driving:
-  mode: fcfs_tank # First come first serve with tank steering.
-  motors: #Motor 1 is our left motor, motor 2 is our right.
+  mode: fcfslb_tank # First come first serve with tank steering and lookback.
+  motors: #Motor 2 is our left motor, motor 1 is our right.
     left: 
-      - M1
-    right: 
       - M2
+    right: 
+      - M1
     
 # Define plugins
 plugins: 
