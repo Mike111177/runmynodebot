@@ -47,7 +47,7 @@ class FCFSLB_TANK {
 		this.timer = setInterval(()=>{
 			// If the command is the same as the runnning command and it is not stale, do nothing and continue.
 			if (!(this.last.cmd === this.handling && Date.now()-this.last.time<lbtime)){
-				stop();
+				this.stop();
 			}
 		}, delay);
 	}
