@@ -18,12 +18,6 @@ parts:
     type: Motor
     preset: ADAFRUIT_V2.M4
 
-  - id: GUN_RESET #The tiger tank has a switch that triggers when the gun is reset.
-    type: Button
-    options: 
-      pin: GPIO27 #The top right pin of the pi.
-      isPullup: true #Enable the internal pullup resistor, the switch connects GPIO27 to ground.
-
   - id: LASER # For the gun mounted laser
     type: Led
     options: 
