@@ -12,14 +12,15 @@ class Move {
 		this.devices = devicemap;
 		for (var command in config){
 			let cmd = {};
-			Object.assign(cmd, config[command], {handling: false});
+			Object.assign(cmd, {key_positions: ['down']}, config[command], {handling: false});
 			this.commands[command] = cmd;
 		}
 		robot.on('command_to_robot', this.handle_command.bind(this));
 	}
 	
 	handle_command(data){
-		if (data.key_position === 'down' && data.command in this.commands){
+		// If it is a valid command and for that command a valid key position.
+		if (data.command in this.commands && data.key_position in this.commands[data.command].key_positions){
 			let cmd = this.commands[data.command];
 			if (!cmd.handling){
 				cmd.handling = true;

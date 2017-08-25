@@ -45,6 +45,7 @@ plugins:
         motor: M3
         action: reverse
         time: 500
+        key_positions: ['down', 'intermediate']
       FG: #Fire the gun
         motor: M4
         action: reverse
