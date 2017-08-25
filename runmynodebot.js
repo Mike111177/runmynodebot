@@ -70,7 +70,7 @@ hw(config, argv.repl).then((hardware)=>{
 		plugin.instance = new plugin.module(plugin.config.options, config.getFile, devices, robot);
 	});
 	if (argv.repl){
-		hardware.repl.inject({robot: robot, plugins: plugins});
+		hardware.repl.inject({robot: robot, plugins: plugins, drive_man: drive_man});
 	}
 });
 
