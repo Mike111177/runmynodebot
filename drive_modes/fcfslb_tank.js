@@ -83,7 +83,7 @@ class FCFSLB_TANK {
 			this.last.cmd = data.command;
 			this.last.time = Date.now();
 			if (!this.handling){
-				this.handling = this.lastcmd; //Blocking further commands for now.
+				this.handling = this.last.cmd; //Blocking further commands for now.
 				this.commands[data.command]();
 			}
 			return true; // One of our commands, return true to inform main process not to run it as an accessory command.
