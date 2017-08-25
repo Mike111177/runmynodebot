@@ -27,7 +27,7 @@ parts:
     
 # Define driving configuration.
 driving:
-  mode: fcfslb_tank # First come first serve with tank steering and lookback.
+  mode: fcfs_tank # First come first serve with tank steering.
   motors: #Motor 2 is our left motor, motor 1 is our right.
     left: 
       - M2

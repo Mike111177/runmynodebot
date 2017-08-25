@@ -3,6 +3,8 @@
  * however upon completion of each run command, it checks to see if the command
  * was resent near the end of the movement, and if it was, to continue the movement.
  * This should result in smoother continuous movement.
+ * 
+ * This drive mode is experimental and may not perform as intended.
  */
 const five = require('johnny-five');
 
