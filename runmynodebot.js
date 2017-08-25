@@ -31,7 +31,7 @@ var robot;
 if (!argv['no-connect']){
 	// Server connection setup
 	const io = require('./RobotIO');
-	robot = new io({robotID: argv._[1]});
+	robot = new io({robotID: argv._[1].toString()});
 } else {
 	// If the no-connect flag was set, just have robot be a dud event emitter that can be used for debugging.
 	const EventEmitter = require('events');
