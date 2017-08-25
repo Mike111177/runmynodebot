@@ -22,6 +22,7 @@ class FCFS_TANK {
 		this.motors.right = five.Motors(config.motors.right.map(id => devicemap[id]));
 		
 		this.speed = config.speed || 255;
+		this.turn_speed = config[turn-speed] || this.speed/2;
 		this.turn_time = config.turn_time || 500;
 		this.drive_time = config.drive_time || 500;
 		
@@ -33,10 +34,10 @@ class FCFS_TANK {
 		this.commands = {
 				'F': () => {this.drive(Math.floor(this.left_bias*this.speed), Math.floor(this.right_bias*this.speed), this.drive_time);},
 				'B': () => {this.drive(-Math.floor(this.left_bias*this.speed), -Math.floor(this.right_bias*this.speed), this.drive_time);},
-				'L': () => {this.drive(-Math.floor(this.left_bias*this.speed/2), Math.floor(this.right_bias*this.speed/2), this.turn_time);},
-				'R': () => {this.drive(Math.floor(this.left_bias*this.speed/2), -Math.floor(this.right_bias*this.speed/2), this.turn_time);},
-				'SL': () => {this.drive(-Math.floor(this.left_bias*this.speed/2), Math.floor(this.right_bias*this.speed/2), this.turn_time/2);},
-				'SR': () => {this.drive(Math.floor(this.left_bias*this.speed/2), -Math.floor(this.right_bias*this.speed/2), this.turn_time/2);}				
+				'L': () => {this.drive(-Math.floor(this.left_bias*this.turn_speed), Math.floor(this.right_bias*this.turn_speed), this.turn_time);},
+				'R': () => {this.drive(Math.floor(this.left_bias*this.turn_speed), -Math.floor(this.right_bias*this.turn_speed), this.turn_time);},
+				'SL': () => {this.drive(-Math.floor(this.left_bias*this.turn_speed), Math.floor(this.right_bias*this.turn_speed), this.turn_time/2);},
+				'SR': () => {this.drive(Math.floor(this.left_bias*this.turn_speed), -Math.floor(this.right_bias*this.turn_speed), this.turn_time/2);}				
 		};
 		
 		// Set command trigger.

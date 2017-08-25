@@ -55,7 +55,7 @@ hw(config, argv.repl).then((hardware)=>{
 	// Initializing drive manager with selected drive mode.
 	let drive_opts = {};
 	// Command line arguments overwrite config values.
-	let drive_args = ['bias', 'speed', 'turn-time', 'straight-time'].reduce((acc, key) => {
+	let drive_args = ['bias', 'speed', 'turn-time', 'straight-time', 'turn-speed'].reduce((acc, key) => {
 		if (argv[key]){
 			acc[key] = argv[key];
 		} 

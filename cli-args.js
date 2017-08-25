@@ -48,6 +48,11 @@ var argv = require('yargs')
 				type: 'number',
 				group: 'Driving:'
 			},
+			'turn-speed': {
+				describe: 'Base motor speed (power) when turning. Must be between 0 and 255, if left undefined will default to one half of --speed.',
+				type: 'number',
+				group: 'Driving:'
+			},
 			'straight-time': {
 				describe: 'Set the time that the drive motors run when going straight. (Milliseconds)',
 				type: 'number',
