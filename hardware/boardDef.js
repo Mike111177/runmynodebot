@@ -7,6 +7,7 @@ var boardmap = {
 				}
 			}
 		},
+		Arduino: {},
 		PCA9865: {
 			defaults: {
 				controller: "PCA9865",
