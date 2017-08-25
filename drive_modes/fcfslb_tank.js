@@ -18,7 +18,7 @@ class FCFSLB_TANK {
 		this.motors.right = five.Motors(config.motors.right.map(id => devicemap[id]));
 		
 		this.speed = config.speed || 255;
-		this.turn_speed = config[turn-speed] || this.speed/2;
+		this.turn_speed = config['turn-speed'] || this.speed/2;
 		this.turn_time = config.turn_time || 500;
 		this.drive_time = config.drive_time || 500;
 		this.last = {};
