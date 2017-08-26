@@ -10,5 +10,14 @@ rules:
   no-mixed-spaces-and-tabs: warn
   no-unused-vars: ["warn", { "vars": "local"}]
   class-methods-use-this: warn
-
-  
+  no-confusing-arrow: warn
+  curly: ["error", "multi-line"]
+  no-eval: error
+  no-implied-eval: error
+  no-trailing-spaces: warn
+  no-lonely-if: warn
+  no-useless-rename: warn
+  arrow-body-style: ["error", "as-needed"]
+  no-useless-concat: warn
+  no-useless-return: warn
+  no-multi-spaces: warn

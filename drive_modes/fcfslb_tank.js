@@ -9,26 +9,26 @@
 const five = require('johnny-five');
 
 class FCFSLB_TANK {
-	
+
 	constructor(config, getFile, devicemap, robot){
 		this.config = config;
-		
+
 		// Motor setup
 		this.motors = {};
 		//Puts all the motors into a special group that lets them be controlled together.
 		this.motors.left = five.Motors(config.motors.left.map(id => devicemap[id]));
 		this.motors.right = five.Motors(config.motors.right.map(id => devicemap[id]));
-		
+
 		this.speed = config.speed || 255;
 		this.turn_speed = config['turn-speed'] || this.speed/2;
 		this.turn_time = config.turn_time || 500;
 		this.drive_time = config.drive_time || 500;
 		this.last = {};
-		
+
 		this.bias = config.bias || 0;
 		this.left_bias = this.bias<0? 1+this.bias: 1;
 		this.right_bias = this.bias>0? 1-this.bias: 1;
-		
+
 		this.handling = false;
 		this.commands = {
 				'F': () => {this.drive(Math.floor(this.left_bias*this.speed), Math.floor(this.right_bias*this.speed), this.drive_time);},
@@ -36,13 +36,13 @@ class FCFSLB_TANK {
 				'L': () => {this.drive(-Math.floor(this.left_bias*this.turn_speed), Math.floor(this.right_bias*this.turn_speed), this.turn_time);},
 				'R': () => {this.drive(Math.floor(this.left_bias*this.turn_speed), -Math.floor(this.right_bias*this.turn_speed), this.turn_time);},
 				'SL': () => {this.drive(-Math.floor(this.left_bias*this.turn_speed), Math.floor(this.right_bias*this.turn_speed), this.turn_time/2);},
-				'SR': () => {this.drive(Math.floor(this.left_bias*this.turn_speed), -Math.floor(this.right_bias*this.turn_speed), this.turn_time/2);}			
+				'SR': () => {this.drive(Math.floor(this.left_bias*this.turn_speed), -Math.floor(this.right_bias*this.turn_speed), this.turn_time/2);}
 		};
-		
+
 		// Set command trigger.
 		robot.on('command_to_robot', this.handle_command.bind(this));
 	}
-	
+
 	track(delay){
 		let lbtime = delay/5;
 		var timer = setInterval(()=>{
@@ -55,7 +55,7 @@ class FCFSLB_TANK {
 			}
 		}, delay);
 	}
-	
+
 	drive(left_speed, right_speed, time){
 		let moving = false;
 		if (left_speed){

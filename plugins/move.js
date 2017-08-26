@@ -6,7 +6,7 @@ function stop(motor, delay=500){
 }
 
 class Move {
-	
+
 	constructor(config, getFile, devicemap, robot){
 		this.commands = {};
 		this.devices = devicemap;
@@ -17,7 +17,7 @@ class Move {
 		}
 		robot.on('command_to_robot', this.handle_command.bind(this));
 	}
-	
+
 	handle_command(data){
 		// If it is a valid command and for that command a valid key position.
 		if (data.command in this.commands && this.commands[data.command].key_positions.includes(data.key_position)){
@@ -33,7 +33,7 @@ class Move {
 				let dir = cmd.dir || 'fwd';
 				if (dir==='fwd'){
 					motor.fwd(speed);
-					stop.apply(cmd, stop_opts);					
+					stop.apply(cmd, stop_opts);
 				} else if (dir === 'rev') {
 					motor.rev(speed);
 					stop.apply(cmd, stop_opts);

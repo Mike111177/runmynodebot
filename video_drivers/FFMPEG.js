@@ -50,7 +50,7 @@ class FFMPEG {
 		Object.assign(this.config, config, opts);
 		this.getFile = getFile;
 	}
-	
+
 	start(){
 		this.startAudio();
 		this.startVideo();

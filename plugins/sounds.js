@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 
 class Sounds {
-	
+
 	constructor(config, getFile, devicemap, robot){
 		this.commands = {};
 		for (var command in config){
@@ -13,7 +13,7 @@ class Sounds {
 		}
 		robot.on('command_to_robot', this.handle_command.bind(this));
 	}
-	
+
 	handle_command(data){
 		if (data.command in this.commands){
 			exec('aplay -D plughw:2,0 ' + this.commands[data.command], {shell: '/bin/bash'});
