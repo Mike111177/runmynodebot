@@ -6,6 +6,7 @@ class RobotIO extends EventEmitter {
 	constructor(opts={}){
 		super();
 		this.robotID = opts.robotID || false;
+		
 		this.socket = io.connect('http://runmyrobot.com:8022', {reconnect: true});
 
 		if (this.robotID) {
@@ -29,6 +30,9 @@ class RobotIO extends EventEmitter {
 				this.emit('chat_message_with_name', data);
 			}
 		});
+		
+		this.send = this.socket.emit.bind(this.socket);
+		
 	}
 }
 
