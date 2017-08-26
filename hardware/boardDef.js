@@ -27,7 +27,7 @@ function buildBoardDef(conf){
 			Object.assign(opts, conf.options);
 		}
 		if (def.defaults){
-			Object.assign(opts, def.defaults);
+			softAssign(opts, def.defaults);
 		}
 	}
 	return opts;

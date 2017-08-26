@@ -42,15 +42,9 @@ if (!argv['no-connect']){
 	robot = new EventEmitter();
 }
 
-//Motor setup (Adafruit motorhat with four reversable dc motors and four servos)
-const five = require("johnny-five");
-const Raspi = require("raspi-io");
-
-var motors, servos, drive_man, video;
+var drive_man, video, devices;
 
 const drive_mode = require('./drive_modes/'+config.driving.mode);
-
-var devices;
 
 const hw = require('./hardware/config');
 hw(config, argv.repl).then((hardware)=>{
@@ -70,13 +64,14 @@ hw(config, argv.repl).then((hardware)=>{
 	
 	//Initialize plugins.
 	Object.keys(plugins).forEach(name =>{
-		plugin = plugins[name];
+		let plugin = plugins[name];
 		plugin.instance = new plugin.module(plugin.config.options, config.getFile, devices, robot);
 	});
 	
 	if (argv.video){
 		const ffmpeg = require('./video_drivers/FFMPEG');
 		video = new ffmpeg(robot, config.video, config.getFile); // TODO add opts.
+		video.start();
 	}
 	
 	if (argv.repl){

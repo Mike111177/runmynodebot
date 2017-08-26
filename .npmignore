@@ -2,6 +2,7 @@
 *.md.html
 .settings
 .jshintrc
+.eslintrc.yml
 *.md
 docs/
 examples/*/instructions

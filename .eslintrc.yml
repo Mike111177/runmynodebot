@@ -1,0 +1,14 @@
+parserOptions: 
+  ecmaVersion: 6
+  sourceType: module
+env: 
+  node: true
+  es6: true
+extends: eslint:recommended
+rules: 
+  no-console: off
+  no-mixed-spaces-and-tabs: warn
+  no-unused-vars: ["warn", { "vars": "local"}]
+  class-methods-use-this: warn
+
+  

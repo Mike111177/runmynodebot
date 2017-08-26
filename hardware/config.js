@@ -1,11 +1,9 @@
-const yaml = require('js-yaml');
-const fs = require('fs');
 const five = require('johnny-five');
 
 function setupHardware(conf, repl=false){
 	let boardsconf = conf.boards;
 	let partsconf = conf.parts;
-	return new Promise((resolve, reject) => { 
+	return new Promise((resolve) => { 
 		var devicemap = {};
 		let board_opts = readBoards(boardsconf, repl);
 		var boards = new five.Boards(board_opts.real);
@@ -14,7 +12,7 @@ function setupHardware(conf, repl=false){
 				devicemap[board.id] = board;
 			});
 			board_opts.virtual.forEach((vboard)=>{
-				devicemap[vboard.id] = new five.Board.Virtual(new Expander(vboard));
+				devicemap[vboard.id] = new five.Board.Virtual(new five.Expander(vboard));
 			});
 			partsconf.forEach((partcfg)=>{
 				initPart(partcfg, devicemap);
@@ -57,7 +55,7 @@ function initPart(partconf, devicemap){
 		Object.assign(opts, findPreset(partconf));
 	}
 	if (partconf.options) {
-	   Object.assign(opts, partconf.options);
+		Object.assign(opts, partconf.options);
 	}
 	if (opts.board && opts.board in devicemap){
 		opts.board = devicemap[opts.board];

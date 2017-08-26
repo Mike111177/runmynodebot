@@ -91,7 +91,7 @@ var argv = require('yargs')
 				alias: 'ex',
 				describe: 'Use one of the examples from /examples as your robot configuration.',
 				type: 'string',
-				group: 'Hardware:',
+				group: 'Hardware:'
 			},
 			//Debug options
 			'repl':{
