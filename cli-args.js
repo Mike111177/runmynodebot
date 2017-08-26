@@ -76,6 +76,11 @@ var argv = require('yargs')
 				type: 'string',
 				group: 'Text-To-Speech:'
 			},
+			'video': {
+				describe: 'Enable video streaming using FFMPEG. Takes your camera ID as an argument.',
+				type: 'string',
+				group: 'Video:'
+			},
 			'config': {
 				alias: 'c',
 				describe: 'Path to a robot configuration file you would like to use.',
@@ -103,9 +108,20 @@ var argv = require('yargs')
 			'no-connect': {
 				describe: 'Don\'t connect to letsrobot.tv. This is usefull for offline hardware debugging. Requires --repl',
 				type: 'boolean',
+				implies: 'repl',
+				group: 'Debugging:'
+
+			},
+			'enviroment':{
+				alias: 'env',
+				describe: 'Environment for example dev or prod, prod is default',
+				type: 'string',
+				choices: ['prod', 'dev'],
+				default: 'prod',
 				group: 'Debugging:'
 			}
 		})
+		.string('_')
 		.demandCommand(1, 'Please specify your RobotID.')
 		//Check that bias is between -1 and 1
 		.check(({bias}) => {if (-1<=bias&&bias<=1||!bias) return true; else throw(new Error('Error: Bias must be between -1 and 1.'));})
@@ -116,8 +132,6 @@ var argv = require('yargs')
 		//Check and build valid config format
 		.check((args) => args.configuration = buildConfig(args));
 }, argv => argv.run = true)
-//Argument debug. --yargs
-.check((args) => {if (!args.yargs) return true; else {console.log(args); throw('yarg');}})
 //Other options parse as strings
 .string('_')
 .demandCommand(1, 'Please run a command.')

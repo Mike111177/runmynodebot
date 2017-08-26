@@ -31,7 +31,11 @@ var robot;
 if (!argv['no-connect']){
 	// Server connection setup
 	const io = require('./RobotIO');
-	robot = new io({robotID: argv._[1].toString()});
+	robot = new io({
+		robotID: argv._[1],
+		cameraID: argv.video,
+		env: argv.env
+		});
 } else {
 	// If the no-connect flag was set, just have robot be a dud event emitter that can be used for debugging.
 	const EventEmitter = require('events');
@@ -42,7 +46,7 @@ if (!argv['no-connect']){
 const five = require("johnny-five");
 const Raspi = require("raspi-io");
 
-var motors, servos, drive_man;
+var motors, servos, drive_man, video;
 
 const drive_mode = require('./drive_modes/'+config.driving.mode);
 
@@ -69,6 +73,12 @@ hw(config, argv.repl).then((hardware)=>{
 		plugin = plugins[name];
 		plugin.instance = new plugin.module(plugin.config.options, config.getFile, devices, robot);
 	});
+	
+	if (argv.video){
+		const ffmpeg = require('./video_drivers/FFMPEG');
+		video = new ffmpeg(robot, config.video, config.getFile); // TODO add opts.
+	}
+	
 	if (argv.repl){
 		hardware.repl.inject({robot: robot, plugins: plugins, drive_man: drive_man});
 	}

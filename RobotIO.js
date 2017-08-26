@@ -1,13 +1,23 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
+const { format } = require('util');
+const { jsonGrab } = require('./util');
+
+const server = 'runmyrobot.com';
+const port = {
+		prod: 8022,
+		dev: 8122
+}
 
 class RobotIO extends EventEmitter {
 
 	constructor(opts={}){
 		super();
-		this.robotID = opts.robotID || false;
-		
-		this.socket = io.connect('http://runmyrobot.com:8022', {reconnect: true});
+		this.robotID = opts.robotID;
+		this.cameraID = opts.cameraID;
+		this.env = opts.env;
+
+		this.socket = io.connect(format('http://%s:%d', server, port[this.env]), {reconnect: true});
 
 		if (this.robotID) {
 			this.socket.on('connect', ()=>{
@@ -30,10 +40,19 @@ class RobotIO extends EventEmitter {
 				this.emit('chat_message_with_name', data);
 			}
 		});
-		
+
 		this.send = this.socket.emit.bind(this.socket);
-		
+
 	}
+
+	getAudioPort(){
+		return jsonGrab(format('https://%s/get_audio_port/%s', server, this.cameraID));
+	}
+
+	getVideoPort(){
+		return jsonGrab(format('https://%s/get_video_port/%s', server, this.cameraID));
+	}
+
 }
 
 module.exports = RobotIO;
