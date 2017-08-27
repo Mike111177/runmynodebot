@@ -26,6 +26,7 @@ cd FFmpeg
 make -j4
 sudo make install
 ```
+Credit goes to [@r3n33](https://github.com/r3n33) for the dynoverlay filter and install instructions.
 ## Running
 ### The default configuration
 ```bash
