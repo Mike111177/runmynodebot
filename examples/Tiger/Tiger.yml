@@ -50,3 +50,20 @@ plugins:
         motor: M4
         dir: rev
         time: 4500
+  fireoverlay: # Custom plugin for the Tiger example that changes the overlay when a specified motor is active.
+    path: fireoverlay.js
+    options: 
+      normal_state: ./overlay/firing_store/blank.png
+      active_state: ./overlay/firing_store/Tank_Overlay_Firing.png
+      target_file: ./overlay/Tank_Fire_Status.png
+      action_motor: M4
+      
+video: 
+  filters: 
+    - type: dynoverlay
+      file: ./overlay/Tank_Overlay.png
+      check_interval: 10000 #This should never really change
+      
+    - type: dynoverlay
+      file: ./overlay/Tank_Fire_Status.png
+      check_interval: 200 #The gun only fires for 4.5 seconds, so the default time of 500 seconds isn't really enough.
