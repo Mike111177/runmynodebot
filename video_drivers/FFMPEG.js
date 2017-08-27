@@ -86,8 +86,8 @@ class FFMPEG {
 		this.robot.getVideoPort()
 		.then(({ mpeg_stream_port }) => {
 			this.video = exec(format('%s ' + //CMD
-					'-f v4l2 -framerate 25 -video_size 640x480 -i /dev/video%d '+ //Input
-					'-f mpegts -codec:v mpeg1video -s 640x480 -b:v %dk -bf 0 -muxdelay 0.001 %s http://%s:%s/%s/640/480/', //Output 
+					'-f v4l2 -video_size 640x480 -i /dev/video%d '+ //Input
+					'-f mpegts -r 30 -codec:v mpeg1video -s 640x480 -b:v %dk -bf 0 -muxdelay 0.001 %s http://%s:%s/%s/640/480/', //Output 
 					cmd, this.config.videoDeviceNumber, this.config.kbps, buildFilterCli(this.config, this.getFile), server, mpeg_stream_port, streamkey), {shell: '/bin/bash'},
 					(err, stdout, stderr) => {
 						if (err){
