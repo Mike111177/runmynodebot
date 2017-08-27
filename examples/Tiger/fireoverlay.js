@@ -11,6 +11,7 @@ function copy(source, target){ //Just a function for copying files.
 		let wr = fs.createWriteStream(target);
 		rd.on('error', fail);
 		wr.on('error', fail);
+		rd.pipe(wr);
 
 		wr.on('done', ()=>{
 			if (!error) resolve();
