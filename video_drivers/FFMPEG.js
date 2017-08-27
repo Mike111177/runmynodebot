@@ -60,6 +60,14 @@ class FFMPEG {
 				this.startVideo();
 			}
 		}, 5000); // Check every 5 seconds.
+
+		setInterval(() => {
+			this.robot.send('send_video_status', {
+				send_video_process_exists: true,
+                ffmpeg_process_exists: true,
+                camera_id: this.robot.cameraID
+			});
+		}, 60000); // Send every minute.
 	}
 
 	startAudio(){
