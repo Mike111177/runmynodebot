@@ -56,7 +56,7 @@ class FFMPEG {
 			if (!this.audio){
 				this.startAudio();
 			}
-			if (!this.video()){
+			if (!this.video){
 				this.startVideo();
 			}
 		}, 5000); // Check every 5 seconds.
