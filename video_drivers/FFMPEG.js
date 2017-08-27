@@ -52,8 +52,14 @@ class FFMPEG {
 	}
 
 	start(){
-		this.startAudio();
-		this.startVideo();
+		setInterval(() => {
+			if (!this.audio){
+				this.startAudio();
+			}
+			if (!this.video()){
+				this.startVideo();
+			}
+		}, 5000); // Check every 5 seconds.
 	}
 
 	startAudio(){
@@ -68,12 +74,8 @@ class FFMPEG {
 						if (err){
 							console.log(err);
 						}
-						console.log(stderr);
+						this.audio = undefined;
 					});
-			this.audio.on('stop', () => { // Restart if it stops
-				this.audio = undefined;
-				this.setTimeout(() => this.startAudio(), 500);
-			});
 		});
 	}
 
@@ -91,12 +93,8 @@ class FFMPEG {
 						if (err){
 							console.log(err);
 						}
-						console.log(stderr);
+						this.video = undefined;
 					});
-			this.video.on('stop', () => { // Restart if it stops.
-				this.video = undefined;
-				this.setTimeout(() => this.startVideo(), 500);
-			});
 		});
 	}
 
