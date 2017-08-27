@@ -63,7 +63,13 @@ class FFMPEG {
 		this.robot.getAudioPort()
 		.then(({ audio_stream_port }) => {
 			this.audio = exec(format('%s -f alsa -ar 44100 -ac %d -i hw:%d -f mpegts -codec:a mp2 -b:a 32k -muxdelay 0.001 http://%s:%s/%s/640/480/',
-					cmd, this.config.micChannels, this.config.audioDeviceNumber, server, audio_stream_port, streamkey), {shell: '/bin/bash'});
+					cmd, this.config.micChannels, this.config.audioDeviceNumber, server, audio_stream_port, streamkey), {shell: '/bin/bash'},
+					(err, stdout, stderr) => {
+						if (err){
+							console.log(err);
+						}
+						console.log(stderr);
+					});
 			this.audio.on('stop', () => { // Restart if it stops
 				this.audio = undefined;
 				this.setTimeout(() => this.startAudio(), 500);
@@ -81,7 +87,13 @@ class FFMPEG {
 					'%s' + //Filters
 					'-f v4l2 -framerate 25 -video_size 640x480 -i /dev/video%d '+ //Input
 					'-f mpegts -codec:v mpeg1video -s 640x480 -b:v %dk -bf 0 -muxdelay 0.001 http://%s:%s/%s/640/480/', //Output 
-					cmd, buildFilterCli(this.config, this.getFile), this.config.videoDeviceNumber, this.config.kbps, server, mpeg_stream_port, streamkey), {shell: '/bin/bash'});
+					cmd, buildFilterCli(this.config, this.getFile), this.config.videoDeviceNumber, this.config.kbps, server, mpeg_stream_port, streamkey), {shell: '/bin/bash'},
+					(err, stdout, stderr) => {
+						if (err){
+							console.log(err);
+						}
+						console.log(stderr);
+					});
 			this.video.on('stop', () => { // Restart if it stops.
 				this.video = undefined;
 				this.setTimeout(() => this.startVideo(), 500);
