@@ -16,11 +16,28 @@ npm install
 ```bash
 npm install raspi-io
 ```
+##### If you are planning on using the video streaming feature, you will need to install FFmpeg:
+```bash
+sudo apt install gnutls-dev
+cd /usr/local/src
+git clone https://github.com/r3n33/FFmpeg.git -b dynoverlay
+cd FFmpeg
+./configure --arch=armel --target-os=linux --enable-gpl --enable-libx264 --enable-nonfree --enable-gnutls --extra-libs=-ldl --enable-zlib
+make -j4
+sudo make install
+```
 ## Running
 ### The default configuration
 ```bash
 sudo node runmynodebot.js run <Your robot ID>
 ```
+#### The default configuration with video streaming
+```bash
+sudo node runmynodebot.js run <Your robot ID> --video <Your camera ID>
+```
+Note that the default configuration does put a watermark on video output. 
+If you are using the video feature of this program and would like to remove said watermark, 
+simply create and use your own configuration file.
 ### A configuration from the examples folder
 ```bash
 sudo runmynodebot.js run <Your robot ID> --example Tiger

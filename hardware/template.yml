@@ -29,10 +29,10 @@ driving:
       - M4
     
 # Define plugins
-plugins: 
-  sounds: # The built-in sounds plugin allows you to play .wav files over the speakers when the bot receives commands
-    options:
-      LOUD: /home/pi/loud_noise.wav # Play loud_noise.wav when the bot recieves the command 'LOUD'
+#plugins: 
+#  sounds: # The built-in sounds plugin allows you to play .wav files over the speakers when the bot receives commands
+#    options:
+#      LOUD: /home/pi/loud_noise.wav # Play loud_noise.wav when the bot recieves the command 'LOUD'
 #  move: #The built-in move plugin allows you to make primitive movments upon receiving a command
 #    options:
 #      OPEN: #Could be used for opining and closing a claw.
