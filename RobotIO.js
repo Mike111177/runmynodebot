@@ -3,7 +3,7 @@ const EventEmitter = require('events');
 const { format } = require('util');
 const { jsonGrab } = require('./util');
 
-const server = 'runmyrobot.com';
+const server = 'letsrobot.tv';
 const port = {
 		prod: 8022,
 		dev: 8122
