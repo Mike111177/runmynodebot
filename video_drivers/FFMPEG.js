@@ -25,7 +25,7 @@ function buildFilterCli(config, getFile){
 		build += '-vf ';
 		let filist = [];
 		config.filters.forEach((filter) => {
-			filist.push(filters[filter.type](filter.options, getFile));
+			filist.push(filters[filter.type](filter, getFile));
 		});
 		build += filist.join(',');
 		build += ' ';
