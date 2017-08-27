@@ -72,7 +72,7 @@ var argv = require('yargs')
 			'tts-driver':{
 				describe: 'Choose which tts engine to use.',
 				default: 'espeak',
-				choices: fs.readdirSync(__dirname + path.sep + 'tts_drivers').map(fname => {return fname.slice(0,-3);}), //Reading from tts_drivers
+				choices: fs.readdirSync(__dirname + path.sep + 'tts_drivers').map(fname => fname.slice(0,-3)), //Reading from tts_drivers
 				type: 'string',
 				group: 'Text-To-Speech:'
 			},

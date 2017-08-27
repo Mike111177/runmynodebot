@@ -28,10 +28,10 @@ module.exports = {
 			rd.on('error', fail);
 			wr.on('error', fail);
 			rd.pipe(wr);
-			
+
 			wr.on('done', ()=>{
 				if (!error) resolve();
 			});
 		});
-	} 
+	}
 };
