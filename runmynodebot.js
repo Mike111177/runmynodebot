@@ -76,6 +76,9 @@ hw(config, argv.repl).then((hardware)=>{
 	
 	if (argv.repl){
 		hardware.repl.inject({robot: robot, plugins: plugins, drive_man: drive_man});
+		if (argv.video){
+			hardware.repl.inject({video: video});
+		}
 	}
 });
 
