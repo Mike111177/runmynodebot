@@ -36,17 +36,19 @@ class POLLING_TANK {
 		// Set command trigger.
 		robot.on('command_to_robot', this.handle_command.bind(this));
 
-		// Poll at 10hz
-		setInterval(this.poll.bind(this), 100);
+		// Poll at 4 hz
+		this.loop = setInterval(this.poll.bind(this), 250);
 	}
 
 	poll(){
 		if (this.cmd){
+			this.handling = true;
 			this.commands[this.cmd]();
 			this.cmd = null;
 		} else {
 			this.motors.left.stop();
 			this.motors.right.stop();
+			this.handling = false;
 		}
 	}
 
@@ -70,6 +72,13 @@ class POLLING_TANK {
 	handle_command(data){
 		if (data.key_position !== 'up' && data.command in this.commands){
 			this.cmd = data.command;
+			if (!this.handling) {
+				this.poll();
+			}
+		} else if (data.command === 'stop'){
+			this.motors.left.stop();
+			this.motors.right.stop();
+			this.handling = false;
 		}
 	}
 }
