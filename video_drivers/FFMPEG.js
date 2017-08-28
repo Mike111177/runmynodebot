@@ -45,7 +45,7 @@ class FFMPEG {
 				videoDeviceNumber: 0,
 				micChannels: 1,
 				audioDeviceNumber: 1,
-				kbps: 350
+				kbps: 500
 		}
 		Object.assign(this.config, config, opts);
 		this.getFile = getFile;
@@ -76,9 +76,15 @@ class FFMPEG {
 		}
 		this.robot.getAudioPort()
 		.then(({ audio_stream_port }) => {
-			this.audio = exec(format('%s -f alsa -ar 44100 -ac %d -i hw:%d -f mpegts -codec:a mp2 -b:a 32k -muxdelay 0.001 http://%s:%s/%s/640/480/',
-					cmd, this.config.micChannels, this.config.audioDeviceNumber, server, audio_stream_port, streamkey), {shell: '/bin/bash'},
-					(err, stdout, stderr) => {
+
+			let micChannels = ''; // By default do not specify mic channels in the ffmpeg command, but if the user wants it, do.
+			if (this.config.micChannels !== undefined){
+				micChannels = format('-ac %d ', this.config.micChannels);
+			}
+
+			this.audio = exec(format('%s -f alsa -ar 44100 %s-i hw:%d -f mpegts -codec:a mp2 -b:a 32k -muxdelay 0.001 http://%s:%s/%s/640/480/',
+					cmd, micChannels, this.config.audioDeviceNumber, server, audio_stream_port, streamkey), {shell: '/bin/bash'},
+					(err) => {
 						if (err){
 							console.log(err);
 						}
@@ -95,9 +101,9 @@ class FFMPEG {
 		.then(({ mpeg_stream_port }) => {
 			this.video = exec(format('%s ' + //CMD
 					'-f v4l2 -video_size 640x480 -i /dev/video%d '+ //Input
-					'-f mpegts -r 30 -codec:v mpeg1video -s 640x480 -b:v %dk -bf 0 -muxdelay 0.001 %s http://%s:%s/%s/640/480/', //Output 
+					'-f mpegts -r 30 -codec:v mpeg1video -s 640x480 -b:v %dk -bf 0 -muxdelay 0.001 -an %s http://%s:%s/%s/640/480/', //Output 
 					cmd, this.config.videoDeviceNumber, this.config.kbps, buildFilterCli(this.config, this.getFile), server, mpeg_stream_port, streamkey), {shell: '/bin/bash'},
-					(err, stdout, stderr) => {
+					(err) => {
 						if (err){
 							console.log(err);
 						}
