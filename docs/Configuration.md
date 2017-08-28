@@ -27,7 +27,7 @@ Parts are all of the components used to drive your robot such as Motors, LED's, 
 They are defined by a type, and id and their part specific options.
 Below is a sample config for a robot with a single LED.
 ```yaml
-parts:
+parts: 
   - id: STATUS # The id of any part (or board for that matter) is arbitrary, as long as it is unique.
     type: Led # The type is in-fact case sensitive.
     options:  
@@ -51,7 +51,7 @@ If you use both a preset and options on a part, the options will take priority.
 The driving section defines how the robot moves around when receiving commands from letsrobot.tv
 Here is a sample `driving:` section.
 ```yaml
-driving:
+driving: 
   mode: fcfs_tank # Mode is selected from the drive_modes folder.
   motors: # Motors 1 and 2 are the left drive wheels, and 3 and 4 are the right drive wheels. 
     left: 
@@ -70,11 +70,32 @@ Below is a sample `plugins:` section:
 ```yaml
 plugins: 
   sounds: # The built-in sounds plugin allows you to play .wav files over the speakers when the bot receives commands
-    options:
+    options: 
       LOUD: /home/pi/loud_noise.wav
   myplugin: 
     # The path field tells runmynodebot that this plugin is custom, and where to find it. 
     path: myplugin.js # Paths can be relative to the config file.
       options: # The options field is passed directly to the plugin. 
         myoption: myvalue
+```
+## Video
+The optional `video:` section can include settings for video output. All video settings are optional, and oftentimes will be default selected by the program.
+
+Different video settings include:
+
+Setting | Default | Description
+------- | ------- | -----------
+`kbps:`| 350 | Bitrate which will be sent to the server in kbps
+`videoDeviceNumber:` | 0 | The device number of the camera to be used.
+`audioDeviceNumber:` | 1 | The device number of the microphone to be used.
+`micChannels:` | auto | The number of channels your microphone has. You probably won't need to set this.
+`filters:` | none | See [Filters](Filters.md)
+
+Below is a sample `video:` section:
+```yaml
+video: 
+  kbps: 1000 # Setting output bitrate to 1000 kbps
+  filters: 
+  	type: dynoverlay # Creating an overlay
+  	file: myoverlay.png # Setting the image for the overlay
 ```
