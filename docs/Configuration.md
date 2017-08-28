@@ -89,12 +89,14 @@ Setting | Default | Description
 `videoDeviceNumber:` | 0 | The device number of the camera to be used.
 `audioDeviceNumber:` | 1 | The device number of the microphone to be used.
 `micChannels:` | auto | The number of channels your microphone has. You probably won't need to set this.
+`resolution:` | 640x480 | Output resolution of the stream.
 `filters:` | none | See [Filters](Filters.md)
 
 Below is a sample `video:` section:
 ```yaml
 video: 
-  kbps: 1000 # Setting output bitrate to 1000 kbps
+  kbps: 700 # Setting output bitrate to 1000 kbps
+  resolution: 800x600
   filters: 
   	type: dynoverlay # Creating an overlay
   	file: myoverlay.png # Setting the image for the overlay

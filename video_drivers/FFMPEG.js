@@ -44,9 +44,13 @@ class FFMPEG {
 		this.config = { //These are just defaults.
 				videoDeviceNumber: 0,
 				audioDeviceNumber: 1,
+				resolution: '640x480',
 				kbps: 500
 		}
 		Object.assign(this.config, config, opts);
+		let res = this.config.resolution.split('x');
+		this.xres = res[0];
+		this.yres = res[1];
 		this.getFile = getFile;
 	}
 
@@ -98,9 +102,9 @@ class FFMPEG {
 		}
 		this.robot.getVideoPort()
 		.then(({ mpeg_stream_port }) => {
-			this.video = exec(format('%s ' + //CMD
-					'-f v4l2 -video_size 640x480 -i /dev/video%d '+ //Input
-					'-f mpegts -r 30 -codec:v mpeg1video -s 640x480 -b:v %dk -bf 0 -muxdelay 0.001 -an %s http://%s:%s/%s/640/480/', //Output 
+			this.video = exec(format(`%s ` + //CMD
+					`-f v4l2 -video_size ${this.xres}x${this.yres} -i /dev/video%d `+ //Input
+					`-f mpegts -r 30 -codec:v mpeg1video -s ${this.xres}x${this.yres} -b:v %dk -bf 0 -muxdelay 0.001 -an %s http://%s:%s/%s/${this.xres}/${this.yres}/`, //Output 
 					cmd, this.config.videoDeviceNumber, this.config.kbps, buildFilterCli(this.config, this.getFile), server, mpeg_stream_port, streamkey), {shell: '/bin/bash'},
 					(err) => {
 						if (err){
