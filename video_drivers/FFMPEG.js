@@ -43,7 +43,6 @@ class FFMPEG {
 		this.robot = robot;
 		this.config = { //These are just defaults.
 				videoDeviceNumber: 0,
-				micChannels: 1,
 				audioDeviceNumber: 1,
 				kbps: 500
 		}
