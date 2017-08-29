@@ -24,7 +24,7 @@ function jsonGrab(link) {
 			res.on('end', ()=>{
 				resolve(JSON.parse(rawData));
 			});
-		}).on('err', reject);
+		}).on('error', reject);
 	});
 }
 

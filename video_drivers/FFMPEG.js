@@ -87,13 +87,8 @@ class FFMPEG {
 
 			this.audio = exec(format('%s -f alsa -ar 44100 %s-i hw:%d -f mpegts -codec:a mp2 -b:a 32k -muxdelay 0.001 http://%s:%s/%s/640/480/',
 					cmd, micChannels, this.config.audioDeviceNumber, server, audio_stream_port, streamkey), {shell: '/bin/bash'},
-					(err) => {
-						if (err){
-							console.log(err);
-						}
-						this.audio = undefined;
-					});
-		});
+					() => {this.audio = undefined;});
+		}).catch(()=>{});
 	}
 
 	startVideo(){
@@ -106,13 +101,8 @@ class FFMPEG {
 					`-f v4l2 -video_size ${this.xres}x${this.yres} -i /dev/video%d `+ //Input
 					`-f mpegts -r 30 -codec:v mpeg1video -s ${this.xres}x${this.yres} -b:v %dk -bf 0 -muxdelay 0.001 -an %s http://%s:%s/%s/${this.xres}/${this.yres}/`, //Output 
 					cmd, this.config.videoDeviceNumber, this.config.kbps, buildFilterCli(this.config, this.getFile), server, mpeg_stream_port, streamkey), {shell: '/bin/bash'},
-					(err) => {
-						if (err){
-							console.log(err);
-						}
-						this.video = undefined;
-					});
-		});
+					() => {this.video = undefined;});
+		}).catch(()=>{});
 	}
 
 }
