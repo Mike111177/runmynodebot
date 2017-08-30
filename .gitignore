@@ -3,3 +3,5 @@
 .settings
 .tern-project
 .jshintrc
+node_modules
+package-lock.json
