@@ -24,7 +24,7 @@ class RobotIO extends EventEmitter {
       this.robotID = this.baseID;
     }
 
-    let preq = request(`/get_control_host_port/${this.robotID}`);
+    let preq = [request(`/get_control_host_port/${this.robotID}`)];
     if (this.cameraID){
       preq.push(request(`/get_audio_port/${this.cameraID}`));
       preq.push(request(`/get_video_port/${this.cameraID}`));
