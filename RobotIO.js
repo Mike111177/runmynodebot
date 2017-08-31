@@ -65,17 +65,7 @@ class RobotIO extends EventEmitter {
     });
 
     this.send = this.socket.emit.bind(this.socket);
-
   }
-
-  getAudioPort(){
-    return jsonGrab(format('https://%s/get_audio_port/%s', server, this.cameraID));
-  }
-
-  getVideoPort(){
-    return jsonGrab(format('https://%s/get_video_port/%s', server, this.cameraID));
-  }
-
 }
 
 module.exports = RobotIO;
