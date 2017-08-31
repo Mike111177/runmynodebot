@@ -1,5 +1,5 @@
 parserOptions: 
-  ecmaVersion: 6
+  ecmaVersion: 2017
   sourceType: module
 env: 
   node: true
@@ -21,3 +21,9 @@ rules:
   no-useless-concat: warn
   no-useless-return: warn
   no-multi-spaces: warn
+  indent: ["warn", 2]
+  no-tabs: warn
+  func-call-spacing: ["warn", "never"]
+  comma-spacing: ["warn", { "before": false, "after": true }]
+  space-in-parens: ["error", "never"]
+  space-infix-ops: warn

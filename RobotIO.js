@@ -1,23 +1,46 @@
 const io = require('socket.io-client');
 const EventEmitter = require('events');
 const { format } = require('util');
-const { jsonGrab } = require('./util');
 
 const server = 'letsrobot.tv';
-const port = {
-		prod: 8022,
-		dev: 8122
-}
+
+const request = require('request-promise-native').defaults({
+	baseUrl: format('https://%s', server),
+	json: true
+});
 
 class RobotIO extends EventEmitter {
 
-	constructor(opts={}){
+	constructor(id){
 		super();
-		this.robotID = opts.robotID;
-		this.cameraID = opts.cameraID;
-		this.env = opts.env;
+		this.baseID = id;
+	}
 
-		this.socket = io.connect(format('http://%s:%d', server, port[this.env]), {reconnect: true});
+	async build(){
+		try {
+			this.robotID = await request(`/get_robot_id/${this.baseID}`);
+			this.cameraID = this.baseID;
+		} catch (e) {
+			this.robotID = this.baseID;
+		}
+
+		let preq = request(`/get_control_host_port/${this.robotID}`);
+		if (this.cameraID){
+			preq.push(request(`/get_audio_port/${this.cameraID}`));
+			preq.push(request(`/get_video_port/${this.cameraID}`));
+		}
+
+		let pres = await Promise.all(preq);
+		this.cport = pres[0].port;
+		if (this.cameraID){
+			this.aport = pres[1].audio_stream_port;
+			this.vport = pres[2].mpeg_stream_port;
+		}
+	}
+
+	start(){
+
+		this.socket = io.connect(format('http://%s:%d', server, this.cport), {reconnect: true});
 
 		if (this.robotID) {
 			this.socket.on('connect', ()=>{

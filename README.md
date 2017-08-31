@@ -34,14 +34,14 @@ sudo node runmynodebot.js run <Your robot ID>
 ```
 #### The default configuration with video streaming
 ```bash
-sudo node runmynodebot.js run <Your robot ID> --video <Your camera ID>
+sudo node runmynodebot.js run <Your camera ID>
 ```
 Note that the default configuration does put a watermark on video output. 
 If you are using the video feature of this program and would like to remove said watermark, 
 simply create and use your own configuration file.
 ### A configuration from the examples folder
 ```bash
-sudo runmynodebot.js run <Your robot ID> --example Tiger
+sudo runmynodebot.js run <Your robot ID or camera ID> --example Tiger
 ```
 ### A custom configuration
 Warning: This software is in very early development, your configuration may not survive updates.
@@ -55,5 +55,5 @@ You can then edit myrobot.yml as you please.<br>
 To see more about configuration files see [Configuration](docs/Configuration.md)<br>
 To run then:
 ```bash
-sudo node ~/runmynodebot/runmynodebot.js run <Your robot ID> --config myrobot.yml
+sudo node ~/runmynodebot/runmynodebot.js run <Your robot ID or camera ID> --config myrobot.yml
 ```

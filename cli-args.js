@@ -33,7 +33,7 @@ var argv = require('yargs')
 // The command to run the robot.
 .command('run', 'Run a robot', (yargs) => {
 		yargs
-		.usage('Usage: $0 run <robotid> --[opts]')
+		.usage('Usage: $0 run <robotid or cameraid> --[opts]')
 		.options({
 			//Bias option
 			'bias': {
@@ -76,11 +76,6 @@ var argv = require('yargs')
 				type: 'string',
 				group: 'Text-To-Speech:'
 			},
-			'video': {
-				describe: 'Enable video streaming using FFMPEG. Takes your camera ID as an argument.',
-				type: 'string',
-				group: 'Video:'
-			},
 			'config': {
 				alias: 'c',
 				describe: 'Path to a robot configuration file you would like to use.',
@@ -122,7 +117,7 @@ var argv = require('yargs')
 			}
 		})
 		.string('_')
-		.demandCommand(1, 'Please specify your RobotID.')
+		.demandCommand(1, 'Please specify your RobotID or CameraID.')
 		//Check that bias is between -1 and 1
 		.check(({bias}) => {if (-1<=bias&&bias<=1||!bias) return true; else throw(new Error('Error: Bias must be between -1 and 1.'));})
 		//Check that move-speed is between 0 and 255
@@ -138,7 +133,7 @@ var argv = require('yargs')
 .version()
 .help()
 .strict(true)
-.epilog('For command specific help you can use:\n$0 <command> --help')
+.epilog('For command specific help you can use: <command> --help')
 .argv;
 
 module.exports = argv;

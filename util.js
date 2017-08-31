@@ -1,5 +1,3 @@
-const { URL } = require('url');
-const { get } = require('https');
 const fs = require('fs');
 
 function dive(obj, path){
@@ -14,18 +12,6 @@ function softAssign(...objs){
 			target[key] = source[key];
 		}
 	}));
-}
-
-function jsonGrab(link) {
-	return new Promise((resolve, reject)=>{
-		get(new URL(link), (res) =>{
-			let rawData = '';
-			res.on('data', (chunk) => { rawData += chunk; });
-			res.on('end', ()=>{
-				resolve(JSON.parse(rawData));
-			});
-		}).on('error', reject);
-	});
 }
 
 function copy(source, target) {
@@ -49,6 +35,5 @@ function copy(source, target) {
 module.exports = {
 	dive: dive,
 	softAssign: softAssign,
-	jsonGrab: jsonGrab,
 	copy: copy
 };

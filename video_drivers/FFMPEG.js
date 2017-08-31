@@ -34,7 +34,7 @@ function buildFilterCli(config, getFile){
 }
 
 const cmd = '/usr/local/bin/ffmpeg';
-const server = "runmyrobot.com";
+const server = "letsrobot.tv";
 const streamkey = 'hello';
 
 class FFMPEG {
@@ -77,34 +77,26 @@ class FFMPEG {
 		if (this.audio){
 			this.audio.kill();
 		}
-		this.robot.getAudioPort()
-		.then(({ audio_stream_port }) => {
-
-			let micChannels = ''; // By default do not specify mic channels in the ffmpeg command, but if the user wants it, do.
-			if (this.config.micChannels !== undefined){
-				micChannels = format('-ac %d ', this.config.micChannels);
-			}
-
-			this.audio = exec(format('%s -f alsa -ar 44100 %s-i hw:%d -f mpegts -codec:a mp2 -b:a 32k -muxdelay 0.001 http://%s:%s/%s/640/480/',
-					cmd, micChannels, this.config.audioDeviceNumber, server, audio_stream_port, streamkey), {shell: '/bin/bash'},
-					() => {this.audio = undefined;});
-			this.audio.stderr.pipe(process.stderr);
-		}).catch(()=>{});
+		let micChannels = ''; // By default do not specify mic channels in the ffmpeg command, but if the user wants it, do.
+		if (this.config.micChannels !== undefined){
+			micChannels = format('-ac %d ', this.config.micChannels);
+		}
+		this.audio = exec(format(`%s -f alsa -ar 44100 %s-i hw:%d -f mpegts -codec:a mp2 -b:a 32k -muxdelay 0.001 http://%s:%s/%s/${this.xres}/${this.yres}/`,
+				cmd, micChannels, this.config.audioDeviceNumber, server, this.robot.aport, streamkey), {shell: '/bin/bash'},
+				() => {this.audio = undefined;});
+		this.audio.stderr.pipe(process.stderr);
 	}
 
 	startVideo(){
 		if (this.video){
 			this.video.kill();
 		}
-		this.robot.getVideoPort()
-		.then(({ mpeg_stream_port }) => {
-			this.video = exec(format(`%s ` + //CMD
-					`-f v4l2 -video_size ${this.xres}x${this.yres} -i /dev/video%d `+ //Input
-					`-f mpegts -r 30 -codec:v mpeg1video -s ${this.xres}x${this.yres} -b:v %dk -bf 0 -muxdelay 0.001 -an %s http://%s:%s/%s/${this.xres}/${this.yres}/`, //Output 
-					cmd, this.config.videoDeviceNumber, this.config.kbps, buildFilterCli(this.config, this.getFile), server, mpeg_stream_port, streamkey), {shell: '/bin/bash'},
-					() => {this.video = undefined;});
-			this.video.stderr.pipe(process.stderr);
-		}).catch(()=>{});
+		this.video = exec(format(`%s ` + //CMD
+				`-f v4l2 -video_size ${this.xres}x${this.yres} -i /dev/video%d `+ //Input
+				`-f mpegts -r 30 -codec:v mpeg1video -s ${this.xres}x${this.yres} -b:v %dk -bf 0 -muxdelay 0.001 -an %s http://%s:%s/%s/${this.xres}/${this.yres}/`, //Output 
+				cmd, this.config.videoDeviceNumber, this.config.kbps, buildFilterCli(this.config, this.getFile), server, this.robot.vport, streamkey), {shell: '/bin/bash'},
+				() => {this.video = undefined;});
+		this.video.stderr.pipe(process.stderr);
 	}
 
 }
